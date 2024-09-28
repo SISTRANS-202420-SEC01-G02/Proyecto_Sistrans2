@@ -2,12 +2,14 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -17,9 +19,10 @@ public class Recepcion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
-    
-    private Date fechaFinal;
+    @Column(name = "fecharecepcion")
+    private Date fechaRecepcion;
 
     // FOREIGN KEYS
 
@@ -27,9 +30,13 @@ public class Recepcion {
     @JoinColumn(name = "bodega_id", referencedColumnName = "id")
     private Bodega bodega;
 
-    public Recepcion(Date fechaFinal){
+    @OneToOne
+    @JoinColumn(name = "ordencompra_id", referencedColumnName = "id")
+    private OrdenCompra ordenCompra;
 
-        this.fechaFinal = fechaFinal;
+    public Recepcion(Date fecharecepcion){
+
+        this.fechaRecepcion = fecharecepcion;
 
     }
 
@@ -45,12 +52,21 @@ public class Recepcion {
         this.id = id;
     }
 
-    public Date getFechaFinal() {
-        return fechaFinal;
+
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
     }
 
-    public void setFechaFinal(Date fechaFinal) {
-        this.fechaFinal = fechaFinal;
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
     }
 
     public Bodega getBodega() {

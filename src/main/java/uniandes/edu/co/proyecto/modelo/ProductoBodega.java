@@ -1,6 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 import uniandes.edu.co.proyecto.modelo.pks.ProductoBodegaPK;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -11,10 +11,13 @@ public class ProductoBodega{
 
     @EmbeddedId 
     private ProductoBodegaPK pk;
-
+    @Column(name = "costopromedio")
     private Integer costoPromedio;
+    @Column(name = "cantidadproducto")
     private Integer cantidadProducto;
+    @Column(name = "nivelreorden")
     private Integer nivelReorden;
+    @Column(name = "capacidadproducto")
     private Integer capacidadProducto;
 
     public ProductoBodega(Producto producto_codigobarras, Bodega bodega_id, Integer costoPromedio, Integer cantidadProducto, Integer nivelReorden, Integer capacidadProducto) {

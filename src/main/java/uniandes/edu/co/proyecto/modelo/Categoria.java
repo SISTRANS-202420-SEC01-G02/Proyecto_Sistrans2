@@ -3,6 +3,7 @@ package uniandes.edu.co.proyecto.modelo;
 import java.sql.Date;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,11 +18,14 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "codigo")
     private Integer codigo;
-    
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "descripcion")
     private String descripcion;
-    private String caracteristicasAlmacena;
+    @Column(name = "caracteristicasalmacenaje")
+    private String caracteristicasAlmacenaje;
 
     // FOREIGN KEYS
     
@@ -32,7 +36,7 @@ public class Categoria {
 
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.caracteristicasAlmacena = caracteristicasAlmacena;
+        this.caracteristicasAlmacenaje = caracteristicasAlmacena;
 
     }
 
@@ -64,20 +68,20 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public String getCaracteristicasAlmacena() {
-        return caracteristicasAlmacena;
-    }
-
-    public void setCaracteristicasAlmacena(String caracteristicasAlmacena) {
-        this.caracteristicasAlmacena = caracteristicasAlmacena;
-    }
-
     public List<Producto> getProductos() {
         return productos;
     }
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
+    }
+
+    public String getCaracteristicasAlmacenaje() {
+        return caracteristicasAlmacenaje;
+    }
+
+    public void setCaracteristicasAlmacenaje(String caracteristicasAlmacenaje) {
+        this.caracteristicasAlmacenaje = caracteristicasAlmacenaje;
     }
     
 }

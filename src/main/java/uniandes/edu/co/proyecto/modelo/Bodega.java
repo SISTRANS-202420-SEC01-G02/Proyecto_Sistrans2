@@ -2,6 +2,7 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +19,11 @@ public class Bodega {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
-    
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "tamanio")
     private Integer tamanio;
 
     // FOREIGN KEYS

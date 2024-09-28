@@ -12,7 +12,7 @@ import uniandes.edu.co.proyecto.modelo.Producto;
 public class ProductoCompraPK implements Serializable{
 
     @ManyToOne
-    @JoinColumn(name = "producto_codigobarras", referencedColumnName = "codigoBarras")
+    @JoinColumn(name = "producto_codigobarras", referencedColumnName = "codigobarras")
     private Producto producto_codigobarras;
 
     @ManyToOne

@@ -2,13 +2,13 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,10 +17,13 @@ public class OrdenCompra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
-    
+    @Column(name = "fechaesperada")
     private Date fechaEsperada;
+    @Column(name = "fechacreacion")
     private Date fechaCreacion;
+    @Column(name = "estado")
     private Estado estado;
 
     // FOREIGN KEYS
@@ -32,9 +35,6 @@ public class OrdenCompra {
     @ManyToOne
     @JoinColumn(name = "proveedor_nit", referencedColumnName = "nit")
     private Proveedor proveedor;
-
-    @OneToOne(optional = true)
-    private Recepcion recepcion;
 
     public OrdenCompra(Date fechaEsperada, Date fechaCreacion, Estado estado){
 
@@ -86,15 +86,6 @@ public class OrdenCompra {
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
-    }
-
-    
-    public Recepcion getRecepcion() {
-        return recepcion;
-    }
-
-    public void setRecepcion(Recepcion recepcion) {
-        this.recepcion = recepcion;
     }
 
     public Proveedor getProveedor() {

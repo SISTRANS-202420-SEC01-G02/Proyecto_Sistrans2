@@ -1,5 +1,6 @@
 package uniandes.edu.co.proyecto.modelo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -11,8 +12,9 @@ public class ProductoCompra {
 
     @EmbeddedId
     private ProductoCompraPK pk;
-
+    @Column(name = "precioacordado")
     private Integer precioAcordado;
+    @Column(name = "cantidad")
     private Integer cantidad;
     
     public ProductoCompra(Producto producto_codigobarras, OrdenCompra ordencompra_id, Integer precioAcordado, Integer cantidad) {

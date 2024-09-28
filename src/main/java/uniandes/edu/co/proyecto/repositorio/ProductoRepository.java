@@ -28,7 +28,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Producto SET nombre=:nombre, costobodega=:costoBodega, costounidad=:costoUnidad, presentacion=:presentacion, cantidadpresentacion=:cantidadPresentacion, unidadmedida=:unidadMedida, fechaexpiracion=:fechaExpiracion WHERE codigobarras= :codigoBarras", nativeQuery = true)
+    @Query(value = "UPDATE Producto SET nombre=:nombre, costobodega=:costoBodega, costounidad=:costoUnidad, presentacion=:presentacion, cantidadpresentacion=:cantidadPresentacion, unidadmedida=:unidadMedida, fechaexpiracion=:fechaExpiracion WHERE codigobarras=:codigoBarras", nativeQuery = true)
     void actualizarProducto(@Param("codigoBarras") int codigoBarras, @Param("nombre") String nombre, @Param("costoBodega") Integer costoBodega, @Param("costoUnidad") Integer costoUnidad, @Param("presentacion") String presentacion, @Param("cantidadPresentacion") Integer cantidadPresentacion, @Param("unidadMedida") String unidadMedida, @Param("fechaExpiracion") Date fechaExpiracion);
 
     @Modifying

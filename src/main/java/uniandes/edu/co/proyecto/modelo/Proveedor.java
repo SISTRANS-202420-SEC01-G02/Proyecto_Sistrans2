@@ -2,6 +2,7 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -12,11 +13,15 @@ import jakarta.persistence.Table;
 public class Proveedor {
 
     @Id
+    @Column(name = "nit")
     private Integer nit;
-    
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "direccion")
     private String direccion;
+    @Column(name = "nombrepersona")
     private String nombrePersona;
+    @Column(name = "telefonopersona")
     private Integer telefonoPersona;
 
     // FOREIGN KEYS

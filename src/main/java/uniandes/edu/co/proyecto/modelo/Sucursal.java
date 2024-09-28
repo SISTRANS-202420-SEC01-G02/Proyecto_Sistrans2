@@ -2,6 +2,7 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,11 +18,13 @@ public class Sucursal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
-    
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "tamanio")
     private Integer tamanio;
-    private Integer telefono;
+    @Column(name = "direccion")
     private String direccion;
 
     // FOREIGN KEYS
@@ -37,11 +40,10 @@ public class Sucursal {
     private List<OrdenCompra> ordenCompras;
 
 
-    public Sucursal(String nombre, Integer tamanio, Integer telefono, String direccion){
+    public Sucursal(String nombre, Integer tamanio, String direccion){
         
         this.nombre = nombre;
         this.tamanio = tamanio;
-        this.telefono = telefono;
         this.direccion = direccion;
 
     }
@@ -72,14 +74,6 @@ public class Sucursal {
 
     public void setTamanio(Integer tamanio) {
         this.tamanio = tamanio;
-    }
-
-    public Integer getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(Integer telefono) {
-        this.telefono = telefono;
     }
 
     public String getDireccion() {

@@ -3,6 +3,7 @@ package uniandes.edu.co.proyecto.modelo;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -10,7 +11,9 @@ import jakarta.persistence.Table;
 @Table(name = "proveedor")
 public class Proveedor {
 
+    @Id
     private Integer nit;
+    
     private String nombre;
     private String direccion;
     private String nombrePersona;

@@ -31,7 +31,7 @@ public class OrdenCompra {
 
     @ManyToOne
     @JoinColumn(name = "proveedor_nit", referencedColumnName = "nit")
-    private Proveedor proveedor_nit;
+    private Proveedor proveedor;
 
     @OneToOne(optional = true)
     private Recepcion recepcion;
@@ -88,20 +88,21 @@ public class OrdenCompra {
         this.sucursal = sucursal;
     }
 
-    public Proveedor getProveedor_nit() {
-        return proveedor_nit;
-    }
-
-    public void setProveedor_nit(Proveedor proveedor_nit) {
-        this.proveedor_nit = proveedor_nit;
-    }
-
+    
     public Recepcion getRecepcion() {
         return recepcion;
     }
 
     public void setRecepcion(Recepcion recepcion) {
         this.recepcion = recepcion;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
     
     

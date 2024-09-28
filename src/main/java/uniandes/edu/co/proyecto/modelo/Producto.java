@@ -2,6 +2,7 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,18 +13,26 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="producto")
-public abstract class Producto {
+public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "codigobarras")
     private Integer codigoBarras;
     
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "costobodega")
     private Integer costoBodega;
+    @Column(name = "costounidad")
     private Integer costoUnidad;
+    @Column(name = "presentacion")
     private String presentacion;
+    @Column(name = "cantidadpresentacion")
     private Integer cantidadPresentacion;
+    @Column(name = "unidadmedida")
     private String unidadMedida;
+    @Column(name = "fechaexpiracion")
     private Date fechaExpiracion;
 
     // FOREIGN KEYS

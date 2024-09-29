@@ -17,8 +17,8 @@ import jakarta.persistence.Table;
 public class Producto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "secuencia_gen")
-    @SequenceGenerator(name = "secuencia_gen", sequenceName = "secuencia", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "producto_sequence_gen")
+    @SequenceGenerator(name = "producto_sequence_gen", sequenceName = "producto_sequence", allocationSize = 1)
     @Column(name = "codigobarras")
     private Integer codigoBarras;
     

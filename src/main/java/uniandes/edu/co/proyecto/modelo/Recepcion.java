@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 
@@ -18,8 +19,8 @@ import jakarta.persistence.Table;
 public class Recepcion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recepcion_sequence_gen")
+    @SequenceGenerator(name = "recepcion_sequence_gen", sequenceName = "recepcion_sequence", allocationSize = 1)    @Column(name = "id")
     private Integer id;
     @Column(name = "fecharecepcion")
     private Date fechaRecepcion;

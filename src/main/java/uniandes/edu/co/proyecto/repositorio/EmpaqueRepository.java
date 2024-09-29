@@ -22,7 +22,7 @@ public interface EmpaqueRepository extends JpaRepository<Empaque, Integer> {
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Empaque (volumenempaque, pesoempaque) VALUES(:volumenEmpaque, :pesoEmpaque)", nativeQuery = true)
+    @Query(value = "INSERT INTO Empaque (id, volumenempaque, pesoempaque) VALUES(empaque_sequence.NEXTVAL,:volumenEmpaque, :pesoEmpaque)", nativeQuery = true)
     void insertarEmpaque(@Param("volumenEmpaque") int volumenEmpaque, @Param("pesoEmpaque") int pesoEmpaque);
 
     @Modifying

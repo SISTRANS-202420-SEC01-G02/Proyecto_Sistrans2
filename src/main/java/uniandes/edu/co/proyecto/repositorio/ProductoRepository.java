@@ -23,7 +23,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer>{
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Producto (codigobarras, nombre,costobodega,costounidad,presentacion,cantidadpresentacion,unidadmedida,fechaexpiracion) VALUES(secuencia.NEXTVAL,:nombre,:costoBodega,:costoUnidad,:presentacion,:cantidadPresentacion,:unidadMedida,:fechaExpiracion)", nativeQuery = true)
+    @Query(value = "INSERT INTO Producto (codigobarras, nombre,costobodega,costounidad,presentacion,cantidadpresentacion,unidadmedida,fechaexpiracion) VALUES(producto_sequence.NEXTVAL,:nombre,:costoBodega,:costoUnidad,:presentacion,:cantidadPresentacion,:unidadMedida,:fechaExpiracion)", nativeQuery = true)
     void insertarProducto(@Param("nombre") String nombre, @Param("costoBodega") Integer costoBodega, @Param("costoUnidad") Integer costoUnidad, @Param("presentacion") String presentacion, @Param("cantidadPresentacion") Integer cantidadPresentacion, @Param("unidadMedida") String unidadMedida, @Param("fechaExpiracion") Date fechaExpiracion);
 
     @Modifying

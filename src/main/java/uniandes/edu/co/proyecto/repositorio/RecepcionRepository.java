@@ -23,7 +23,7 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO recepcion (fecharecepcion) VALUES(:fechaRecepcion)", nativeQuery = true)
+    @Query(value = "INSERT INTO recepcion (id, fecharecepcion) VALUES(recepcion_sequence.NEXTVAL, :fechaRecepcion)", nativeQuery = true)
     void insertarRecepcion(@Param("fechaRecepcion") Date fechaRecepcion);
 
     @Modifying

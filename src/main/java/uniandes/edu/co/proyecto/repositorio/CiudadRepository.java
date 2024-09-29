@@ -14,7 +14,7 @@ import uniandes.edu.co.proyecto.modelo.Ciudad;
 @Repository
 public interface CiudadRepository extends JpaRepository<Ciudad, Integer> {
 
-    @Query(value = "SELECT * FROM ciudad", nativeQuery = true)
+    @Query(value = "SELECT * FROM ISIS2304A28202420.ciudad", nativeQuery = true)
     Collection<Ciudad> darCiudades();
     
     @Query(value = "SELECT * FROM Ciudad WHERE codigo = :codigo", nativeQuery = true)
@@ -22,7 +22,7 @@ public interface CiudadRepository extends JpaRepository<Ciudad, Integer> {
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO Ciudad (nombre) VALUES(:nombre)", nativeQuery = true)
+    @Query(value = "INSERT INTO Ciudad (codigo, nombre) VALUES(ciudad_sequence.NEXTVAL,:nombre)", nativeQuery = true)
     void insertarCiudad(@Param("nombre") String nombre);
 
     @Modifying

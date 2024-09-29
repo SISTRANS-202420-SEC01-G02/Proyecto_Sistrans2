@@ -1,13 +1,13 @@
 package uniandes.edu.co.proyecto;
 
-import java.util.Collection;
+//import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+/* import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner; */
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import uniandes.edu.co.proyecto.modelo.Bodega;
+/* import uniandes.edu.co.proyecto.modelo.Bodega;
 import uniandes.edu.co.proyecto.modelo.Categoria;
 import uniandes.edu.co.proyecto.modelo.Ciudad;
 import uniandes.edu.co.proyecto.modelo.Empaque;
@@ -30,12 +30,12 @@ import uniandes.edu.co.proyecto.repositorio.ProductoProveedorRepository;
 import uniandes.edu.co.proyecto.repositorio.ProductoRepository;
 import uniandes.edu.co.proyecto.repositorio.ProveedorRepository;
 import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
-import uniandes.edu.co.proyecto.repositorio.SucursalRepository;
+import uniandes.edu.co.proyecto.repositorio.SucursalRepository; */
 
 @SpringBootApplication
-public class ProyectoApplication implements CommandLineRunner{
+public class ProyectoApplication{
 
-	@Autowired
+	/* @Autowired
 	private ProductoRepository productoRepository;
 	@Autowired
 	private BodegaRepository bodegaRepository;
@@ -58,13 +58,13 @@ public class ProyectoApplication implements CommandLineRunner{
 	@Autowired
 	private RecepcionRepository recepcionRepository;
 	@Autowired
-	private SucursalRepository sucursalRepository;
+	private SucursalRepository sucursalRepository; */
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProyectoApplication.class, args);
 	}
 
-	@Override
+	/* @Override
 	public void run(String... args) throws Exception {
 
 		Collection<Producto> productos = productoRepository.darProductos();
@@ -84,7 +84,7 @@ public class ProyectoApplication implements CommandLineRunner{
 			System.out.println(p);
 			
 		}
-
+	
 		// Itera y muestra todas las ciudades
 		Collection<Ciudad> ciudades = ciudadRepository.darCiudades();
 		for (Ciudad c : ciudades) {
@@ -139,5 +139,5 @@ public class ProyectoApplication implements CommandLineRunner{
 			System.out.println(s);
 		}
 
-	}
+	} */
 }

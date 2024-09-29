@@ -2,6 +2,8 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +36,7 @@ public class Bodega {
     @JoinColumn(name = "sucursal_id", referencedColumnName = "id")
     private Sucursal sucursal;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bodega")
     private List<Recepcion> recepciones;
 

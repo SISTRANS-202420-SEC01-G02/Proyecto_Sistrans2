@@ -3,6 +3,8 @@ package uniandes.edu.co.proyecto.modelo;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,7 @@ public class Categoria {
     private String caracteristicasAlmacenaje;
 
     // FOREIGN KEYS
-    
+    @JsonIgnore
     @OneToMany(mappedBy = "categoria")
     private List<Producto> productos;
 

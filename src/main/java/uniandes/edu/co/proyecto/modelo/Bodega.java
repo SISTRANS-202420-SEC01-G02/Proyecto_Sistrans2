@@ -1,9 +1,5 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -35,10 +30,6 @@ public class Bodega {
     @ManyToOne
     @JoinColumn(name = "sucursal_id", referencedColumnName = "id")
     private Sucursal sucursal;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "bodega")
-    private List<Recepcion> recepciones;
 
     public Bodega(String nombre, Integer tamanio){
         this.nombre = nombre;
@@ -82,13 +73,6 @@ public class Bodega {
         this.sucursal = sucursal;
     }
 
-    public List<Recepcion> getRecepciones() {
-        return recepciones;
-    }
-
-    public void setRecepciones(List<Recepcion> recepciones) {
-        this.recepciones = recepciones;
-    }
 
     
     

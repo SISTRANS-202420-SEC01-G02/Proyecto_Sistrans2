@@ -1,15 +1,10 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -26,12 +21,6 @@ public class Empaque {
     private Integer volumenEmpaque;
     @Column(name = "pesoempaque")
     private Integer pesoEmpaque;
-
-    // FOREIGN KEYS
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "empaque")
-    private List<Producto> productos;
 
     public Empaque(Integer volumenEmpaque, Integer pesoEmpaque) {
 
@@ -66,14 +55,6 @@ public class Empaque {
 
     public void setPesoEmpaque(Integer pesoEmpaque) {
         this.pesoEmpaque = pesoEmpaque;
-    }
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
     }
     
 }

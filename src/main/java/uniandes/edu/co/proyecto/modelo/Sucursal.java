@@ -1,9 +1,5 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -33,17 +28,10 @@ public class Sucursal {
 
     // FOREIGN KEYS
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "sucursal")
-    private List<Bodega> bodegas;
-
     @ManyToOne
     @JoinColumn(name = "ciudad_codigo", referencedColumnName = "codigo")
     private Ciudad ciudad;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "sucursal")
-    private List<OrdenCompra> ordenCompras;
 
 
     public Sucursal(String nombre, Integer tamanio, String direccion){
@@ -90,28 +78,12 @@ public class Sucursal {
         this.direccion = direccion;
     }
 
-    public List<Bodega> getBodegas() {
-        return bodegas;
-    }
-
-    public void setBodegas(List<Bodega> bodegas) {
-        this.bodegas = bodegas;
-    }
-
     public Ciudad getCiudad() {
         return ciudad;
     }
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
-    }
-
-    public List<OrdenCompra> getOrdenCompras() {
-        return ordenCompras;
-    }
-
-    public void setOrdenCompras(List<OrdenCompra> ordenCompras) {
-        this.ordenCompras = ordenCompras;
     }
     
 }

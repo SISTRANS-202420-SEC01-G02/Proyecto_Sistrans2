@@ -1,16 +1,12 @@
 package uniandes.edu.co.proyecto.modelo;
 
 import java.sql.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -30,11 +26,6 @@ public class Categoria {
     private String descripcion;
     @Column(name = "caracteristicasalmacenaje")
     private String caracteristicasAlmacenaje;
-
-    // FOREIGN KEYS
-    @JsonIgnore
-    @OneToMany(mappedBy = "categoria")
-    private List<Producto> productos;
 
     public Categoria(String nombre, String descripcion, String caracteristicasAlmacena, Date fechaExpiracion){
 
@@ -70,14 +61,6 @@ public class Categoria {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
     }
 
     public String getCaracteristicasAlmacenaje() {

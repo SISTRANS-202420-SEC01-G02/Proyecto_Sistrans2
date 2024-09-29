@@ -1,13 +1,8 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,12 +20,6 @@ public class Proveedor {
     private String nombrePersona;
     @Column(name = "telefonopersona")
     private Integer telefonoPersona;
-
-    // FOREIGN KEYS
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "proveedor")
-    private List<OrdenCompra> ordenCompras;
     
     public Proveedor(Integer nit, String nombre, String direccion, String nombrePersona, Integer telefonoPersona) {
         
@@ -86,12 +75,4 @@ public class Proveedor {
         this.telefonoPersona = telefonoPersona;
     }
 
-    public List<OrdenCompra> getOrdenCompras() {
-        return ordenCompras;
-    }
-
-    public void setOrdenCompras(List<OrdenCompra> ordenCompras) {
-        this.ordenCompras = ordenCompras;
-    }
-    
 }

@@ -1,15 +1,12 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -24,12 +21,6 @@ public class Ciudad {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-
-    // FOREIGN KEYS
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "ciudad")
-    private List<Sucursal> sucursales;
 
     public Ciudad(String nombre){
 
@@ -55,14 +46,6 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public List<Sucursal> getSucursales() {
-        return sucursales;
-    }
-
-    public void setSucursales(List<Sucursal> sucursales) {
-        this.sucursales = sucursales;
     }
     
 }

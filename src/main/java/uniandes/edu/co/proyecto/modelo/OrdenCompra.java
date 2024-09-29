@@ -24,7 +24,7 @@ public class OrdenCompra {
     @Column(name = "fechacreacion")
     private Date fechaCreacion;
     @Column(name = "estado")
-    private Estado estado;
+    private String estado;
 
     // FOREIGN KEYS
 
@@ -36,7 +36,7 @@ public class OrdenCompra {
     @JoinColumn(name = "proveedor_nit", referencedColumnName = "nit")
     private Proveedor proveedor;
 
-    public OrdenCompra(Date fechaEsperada, Date fechaCreacion, Estado estado){
+    public OrdenCompra(Date fechaEsperada, Date fechaCreacion, String estado){
 
         this.fechaEsperada = fechaEsperada;
         this.fechaCreacion = fechaCreacion;
@@ -72,11 +72,11 @@ public class OrdenCompra {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Estado getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

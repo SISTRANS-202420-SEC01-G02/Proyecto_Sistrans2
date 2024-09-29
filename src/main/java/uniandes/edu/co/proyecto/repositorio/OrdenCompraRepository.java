@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import uniandes.edu.co.proyecto.modelo.Estado;
 import uniandes.edu.co.proyecto.modelo.OrdenCompra;
 
 @Repository
@@ -25,12 +24,12 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Intege
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO OrdenCompra (fechaesperada, fechacreacion, estado) VALUES(:fechaEsperada, :fechaCreacion, :estado)", nativeQuery = true)
-    void insertarOrdenCompra(@Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") Estado estado);
+    void insertarOrdenCompra(@Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") String estado);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE OrdenCompra SET fechaesperada=:fechaEsperada, fechacreacion=:fechaCreacion, estado=:estado WHERE id=:id", nativeQuery = true)
-    void actualizarOrdenCompra(@Param("id") int id, @Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") Estado estado);
+    void actualizarOrdenCompra(@Param("id") int id, @Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") String estado);
 
     @Modifying
     @Transactional

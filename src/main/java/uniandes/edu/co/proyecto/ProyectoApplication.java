@@ -86,55 +86,55 @@ public class ProyectoApplication implements CommandLineRunner{
 		}
 
 		// Itera y muestra todas las ciudades
-		Collection<Ciudad> ciudades = ciudadRepository.findAll();
+		Collection<Ciudad> ciudades = ciudadRepository.darCiudades();
 		for (Ciudad c : ciudades) {
 			System.out.println(c);
 		}
 
 		// Itera y muestra todos los empaques
-		Collection<Empaque> empaques = empaqueRepository.findAll();
+		Collection<Empaque> empaques = empaqueRepository.darEmpaques();
 		for (Empaque e : empaques) {
 			System.out.println(e);
 		}
 
 		// Itera y muestra todas las órdenes de compra
-		Collection<OrdenCompra> ordenesCompra = ordenCompraRepository.findAll();
+		Collection<OrdenCompra> ordenesCompra = ordenCompraRepository.darOrdenesCompra();
 		for (OrdenCompra o : ordenesCompra) {
 			System.out.println(o);
 		}
 
 		// Itera y muestra todas las relaciones Producto-Bodega
-		Collection<ProductoBodega> productosBodega = productoBodegaRepository.findAll();
+		Collection<ProductoBodega> productosBodega = productoBodegaRepository.darProductosBodega();
 		for (ProductoBodega pb : productosBodega) {
 			System.out.println(pb);
 		}
 
 		// Itera y muestra todas las relaciones Producto-Compra
-		Collection<ProductoCompra> productosCompra = productoCompraRepository.findAll();
+		Collection<ProductoCompra> productosCompra = productoCompraRepository.darProductosCompra();
 		for (ProductoCompra pc : productosCompra) {
 			System.out.println(pc);
 		}
 
 		// Itera y muestra todas las relaciones Producto-Proveedor
-		Collection<ProductoProveedor> productosProveedor = productoProveedorRepository.findAll();
+		Collection<ProductoProveedor> productosProveedor = productoProveedorRepository.darProductosProveedores();
 		for (ProductoProveedor pp : productosProveedor) {
 			System.out.println(pp);
 		}
 
 		// Itera y muestra todos los proveedores
-		Collection<Proveedor> proveedores = proveedorRepository.findAll();
+		Collection<Proveedor> proveedores = proveedorRepository.darProveedores();
 		for (Proveedor p : proveedores) {
 			System.out.println(p);
 		}
 
 		// Itera y muestra todas las recepciones
-		Collection<Recepcion> recepciones = recepcionRepository.findAll();
+		Collection<Recepcion> recepciones = recepcionRepository.darRecepciones();
 		for (Recepcion r : recepciones) {
 			System.out.println(r);
 		}
 
 		// Itera y muestra todas las sucursales
-		Collection<Sucursal> sucursales = sucursalRepository.findAll();
+		Collection<Sucursal> sucursales = sucursalRepository.darSucursales();
 		for (Sucursal s : sucursales) {
 			System.out.println(s);
 		}

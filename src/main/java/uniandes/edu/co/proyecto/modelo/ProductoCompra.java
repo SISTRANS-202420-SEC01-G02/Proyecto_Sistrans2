@@ -24,6 +24,9 @@ public class ProductoCompra {
         this.cantidad = cantidad;
     }
 
+    public ProductoCompra() {
+    }
+
     public ProductoCompraPK getPk() {
         return pk;
     }

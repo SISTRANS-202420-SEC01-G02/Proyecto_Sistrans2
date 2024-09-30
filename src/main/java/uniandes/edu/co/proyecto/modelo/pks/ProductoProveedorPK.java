@@ -1,7 +1,6 @@
 package uniandes.edu.co.proyecto.modelo.pks;
 
 import java.io.Serializable;
-
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,12 +18,14 @@ public class ProductoProveedorPK implements Serializable{
     @JoinColumn(name = "proveedor_nit", referencedColumnName = "nit")
     private Proveedor proveedor_nit;
 
-    public ProductoProveedorPK(Producto producto_codigobarras, Proveedor proveedor_nit) {
-
+    // Constructor vacío requerido por Hibernate
+    public ProductoProveedorPK() {
         super();
+    }
+
+    public ProductoProveedorPK(Producto producto_codigobarras, Proveedor proveedor_nit) {
         this.producto_codigobarras = producto_codigobarras;
         this.proveedor_nit = proveedor_nit;
-
     }
 
     public Producto getProducto_codigobarras() {
@@ -43,4 +44,16 @@ public class ProductoProveedorPK implements Serializable{
         this.proveedor_nit = proveedor_nit;
     }
 
+    @Override
+    public int hashCode() {
+        return producto_codigobarras.hashCode() + proveedor_nit.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof ProductoProveedorPK)) return false;
+        ProductoProveedorPK other = (ProductoProveedorPK) obj;
+        return producto_codigobarras.equals(other.producto_codigobarras) && proveedor_nit.equals(other.proveedor_nit);
+    }
 }

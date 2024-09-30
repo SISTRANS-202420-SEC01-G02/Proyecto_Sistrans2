@@ -18,6 +18,9 @@ public class ProductoProveedor {
 
     }
 
+    public ProductoProveedor() {
+    }
+
     public ProductoProveedorPK getPk() {
         return pk;
     }

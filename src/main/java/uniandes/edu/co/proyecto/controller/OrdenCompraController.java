@@ -1,6 +1,7 @@
 package uniandes.edu.co.proyecto.controller;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,10 @@ public class OrdenCompraController {
         try {
             ordenCompraRepository.insertarOrdenCompra(
                     ordenCompra.getFechaEsperada(),
-                    ordenCompra.getFechaCreacion(),
-                    ordenCompra.getEstado()
+                    new Date(),
+                    "Vigente",
+                    ordenCompra.getSucursal().getId(),
+                    ordenCompra.getProveedor().getNit()
             );
             return new ResponseEntity<>("Orden de compra creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -42,13 +45,19 @@ public class OrdenCompraController {
     @PostMapping("/ordencompra/{id}/edit/save")
     public ResponseEntity<String> editarGuardarOrdenCompra(@PathVariable("id") int id, @RequestBody OrdenCompra ordenCompra) {
         try {
-            ordenCompraRepository.actualizarOrdenCompra(
-                    id,
-                    ordenCompra.getFechaEsperada(),
-                    ordenCompra.getFechaCreacion(),
-                    ordenCompra.getEstado()
-            );
-            return new ResponseEntity<>("Orden de compra actualizada exitosamente", HttpStatus.OK);
+            OrdenCompra ordenActual = ordenCompraRepository.darOrdenCompra(id);
+            if (ordenActual != null) {
+                if (ordenActual.getEstado().equals("Entregada")) {
+                    return new ResponseEntity<>("La orden de compra no puede ser modificada porque está en estado 'Entregada'", HttpStatus.BAD_REQUEST);
+                }
+                if (ordenCompra.getEstado().equals("Anulada") && !ordenActual.getEstado().equals("Vigente")) {
+                    return new ResponseEntity<>("La orden de compra solo puede ser anulada si está en estado 'Vigente'", HttpStatus.BAD_REQUEST);
+                }
+                ordenCompraRepository.actualizarOrdenCompra(id, ordenCompra.getEstado());
+                return new ResponseEntity<>("Orden de compra actualizada exitosamente", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("La orden de compra no se encontró", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>("La orden de compra no se actualizó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
         }

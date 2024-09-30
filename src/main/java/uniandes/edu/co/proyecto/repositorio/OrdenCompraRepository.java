@@ -23,13 +23,13 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Intege
     
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO OrdenCompra (id, fechaesperada, fechacreacion, estado) VALUES(ordencompra_sequence.NEXTVAL, :fechaEsperada, :fechaCreacion, :estado)", nativeQuery = true)
-    void insertarOrdenCompra(@Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") String estado);
+    @Query(value = "INSERT INTO OrdenCompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit) VALUES(ordencompra_sequence.NEXTVAL, :fechaEsperada, :fechaCreacion, :estado, :sucursal_id, :proveedor_nit)", nativeQuery = true)
+    void insertarOrdenCompra(@Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") String estado, @Param("sucursal_id") Integer sucursal_id, @Param("proveedor_nit") Integer proveedor_nit);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE OrdenCompra SET fechaesperada=:fechaEsperada, fechacreacion=:fechaCreacion, estado=:estado WHERE id=:id", nativeQuery = true)
-    void actualizarOrdenCompra(@Param("id") int id, @Param("fechaEsperada") Date fechaEsperada, @Param("fechaCreacion") Date fechaCreacion, @Param("estado") String estado);
+    @Query(value = "UPDATE OrdenCompra SET estado=:estado WHERE id=:id", nativeQuery = true)
+    void actualizarOrdenCompra(@Param("id") int id, @Param("estado") String estado);
 
     @Modifying
     @Transactional

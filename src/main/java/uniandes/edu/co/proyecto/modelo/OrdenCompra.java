@@ -23,7 +23,7 @@ public class OrdenCompra {
     private Integer id;
     @Column(name = "fechaesperada")
     private Date fechaEsperada;
-    @Column(name = "fechacreacion")
+    @Column(name = "fechacreacion", updatable = false)
     private Date fechaCreacion;
     @Column(name = "estado")
     private String estado;

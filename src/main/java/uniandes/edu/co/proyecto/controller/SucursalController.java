@@ -31,7 +31,8 @@ public class SucursalController {
             sucursalRepository.insertarSucursal(
                     sucursal.getNombre(),
                     sucursal.getTamanio(),
-                    sucursal.getDireccion()
+                    sucursal.getDireccion(),
+                    sucursal.getCiudad().getCodigo()
             );
             return new ResponseEntity<>("Sucursal creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {

@@ -1,0 +1,97 @@
+RFUNCIONALES CON POSTMAN:
+
+RF1: Crear una ciudad
+	{
+		"nombre": "Cucuta"
+	}
+
+RF2: Crear una sucursal
+{
+    "nombre": "Sucursal Test",
+    "tamanio": 400,
+    "direccion": "Avenida Central",
+    "ciudad": {
+        "codigo": 1,
+    }
+}
+
+RF3: Crear y borrar una bodega
+{
+    "nombre": "Bodega Test",
+    "tamanio": 1000,
+    "sucursal": {
+        "id": 1
+    }
+}
+
+RF4: Crear y actualizar un proveedor
+
+{
+    "nit": 111111111,
+    "nombre": "Proveedor Ejemplo",
+    "direccion": "Calle Falsa 123",
+    "nombrePersona": "Juan Pérez",
+    "telefonoPersona": 111111111
+}
+
+RF6: Crear, leer y actualizar un producto
+{
+    "nombre": "Leche Entera",
+    "costoBodega": 500,
+    "costoUnidad": 700,
+    "presentacion": "Botella",
+    "cantidadPresentacion": 1,
+    "unidadMedida": "litro",
+    "fechaExpiracion": "2024-12-01",
+    "categoria": {
+        "codigo": 1  // ID de la categoría existente
+    },
+    "empaque": {
+        "id": 1  // ID del empaque existente
+    }
+}
+Actualizar
+{
+    "nombre": "Leche Deslactosada",
+    "costoBodega": 550,
+    "costoUnidad": 750,
+    "presentacion": "Caja",
+    "cantidadPresentacion": 1,
+    "unidadMedida": "litro",
+    "fechaExpiracion": "2025-01-01",
+    "categoria": {
+        "codigo": 2  // Nuevo ID de la categoría si se está cambiando
+    },
+    "empaque": {
+        "id": 2  // Nuevo ID del empaque si se está cambiando
+    }
+}
+
+RF7: Crear una orden de compra
+{
+    "fechaEsperada": "2024-10-15",
+    "sucursal": {
+        "id": 1
+    },
+    "proveedor": {
+        "nit": 1
+    }
+}
+
+{
+    "pk": {
+        "producto_codigobarras": {
+            "codigoBarras": 1
+        },
+        "ordencompra_id": {
+            "id": 1
+        }
+    },
+    "precioAcordado": 1000,
+    "cantidad": 10
+}
+
+RF8: Actualizar una Orden a Anulada
+{
+	"estado": "Anulada"
+}

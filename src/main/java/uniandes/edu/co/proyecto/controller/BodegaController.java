@@ -28,7 +28,7 @@ public class BodegaController {
     @PostMapping("/bodega/new/save")
     public ResponseEntity<String> guardarBodega(@RequestBody Bodega bodega) {
         try {
-            bodegaRepository.insertarBodega(bodega.getNombre(), bodega.getTamanio());
+            bodegaRepository.insertarBodega(bodega.getNombre(), bodega.getTamanio(), bodega.getSucursal().getId());
             return new ResponseEntity<>("Bodega creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la Bodega", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,0 +1,666 @@
+-- Crear secuencia para Ciudad
+CREATE SEQUENCE ciudad_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Sucursal
+CREATE SEQUENCE sucursal_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Bodega
+CREATE SEQUENCE bodega_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Categoria
+CREATE SEQUENCE categoria_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Empaque
+CREATE SEQUENCE empaque_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Producto
+CREATE SEQUENCE producto_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para OrdenCompra
+CREATE SEQUENCE ordencompra_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- Crear secuencia para Recepcion
+CREATE SEQUENCE recepcion_sequence
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE bodega (
+    id          NUMBER NOT NULL,
+    nombre      VARCHAR2(255 BYTE) NOT NULL,
+    tamanio     NUMBER NOT NULL,
+    sucursal_id NUMBER NOT NULL
+);
+
+ALTER TABLE bodega ADD CONSTRAINT bodega_pk PRIMARY KEY ( id );
+ALTER TABLE bodega ADD CONSTRAINT tamaniobod_ck CHECK ( tamanio > 0 );
+
+CREATE TABLE categoria (
+    codigo                    NUMBER NOT NULL,
+    nombre                    VARCHAR2(255 BYTE) NOT NULL,
+    descripcion               VARCHAR2(255 BYTE) NOT NULL,
+    caracteristicasalmacenaje VARCHAR2(255 BYTE) NOT NULL
+);
+
+ALTER TABLE categoria ADD CONSTRAINT categoriacodigo_pk PRIMARY KEY ( codigo );
+ALTER TABLE categoria ADD CONSTRAINT categorianombre_uk UNIQUE ( nombre );
+
+CREATE TABLE ciudad (
+    codigo NUMBER NOT NULL,
+    nombre VARCHAR2(255 BYTE) NOT NULL
+);
+
+ALTER TABLE ciudad ADD CONSTRAINT ciudad_pk PRIMARY KEY ( codigo );
+ALTER TABLE ciudad ADD CONSTRAINT ciudadnombre_uk UNIQUE ( nombre );
+ALTER TABLE ciudad ADD CONSTRAINT ciudadnombre_ck CHECK (nombre IN ('Bogota', 'Medellin', 'Cali', 'Barranquilla', 'Cartagena', 'Santa Marta', 'Cucuta', 'Villavicencio', 'Pereira', 'Manizales', 'Ibague', 'Bucaramanga', 'Pasto', 'Neiva', 'Popayan', 'Monteria', 'Valledupar', 'Armenia', 'Riohacha', 'Tunja', 'Quibdo', 'Sincelejo', 'Yopal', 'Mocoa', 'Puerto Carreno', 'San Andres', 'Leticia', 'Buenaventura'));
+
+CREATE TABLE empaque (
+    id             NUMBER NOT NULL,
+    volumenempaque NUMBER NOT NULL,
+    pesoempaque    NUMBER NOT NULL
+);
+
+ALTER TABLE empaque ADD CONSTRAINT empaque_pk PRIMARY KEY ( id );
+ALTER TABLE empaque ADD CONSTRAINT volumen_ck CHECK ( volumenempaque > 0 );
+ALTER TABLE empaque ADD CONSTRAINT peso_ck CHECK ( pesoempaque > 0 );
+
+CREATE TABLE ordencompra (
+    id            NUMBER NOT NULL,
+    fechaesperada DATE NOT NULL,
+    fechacreacion DATE NOT NULL,
+    estado        VARCHAR2(255 BYTE) NOT NULL,
+    sucursal_id   NUMBER NOT NULL,
+    proveedor_nit NUMBER NOT NULL
+);
+
+ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_pk PRIMARY KEY ( id );
+ALTER TABLE ordencompra ADD CONSTRAINT ordenestado_ck CHECK ( estado IN ('Vigente', 'Entregada', 'Anulada') );
+ALTER TABLE ordencompra ADD CONSTRAINT ordenfecha_ck2 CHECK ( fechaesperada > fechacreacion );
+
+CREATE TABLE producto (
+    codigobarras         NUMBER NOT NULL,
+    nombre               VARCHAR2(255 BYTE) NOT NULL,
+    costobodega          NUMBER NOT NULL,
+    costounidad          NUMBER NOT NULL,
+    presentacion         VARCHAR2(255 BYTE) NOT NULL,
+    cantidadpresentacion NUMBER NOT NULL,
+    unidadmedida          VARCHAR2(255 BYTE) NOT NULL,
+    fechaexpiracion      DATE NOT NULL,
+    categoria_codigo     NUMBER NOT NULL,
+    empaque_id           NUMBER NOT NULL
+);
+
+ALTER TABLE producto ADD CONSTRAINT producto_pk PRIMARY KEY ( codigobarras );
+ALTER TABLE producto ADD CONSTRAINT costobodega_ck CHECK ( costobodega > 0 );
+ALTER TABLE producto ADD CONSTRAINT costounidad_ck CHECK ( costounidad > 0 );
+ALTER TABLE producto ADD CONSTRAINT productocantidad_ck CHECK ( cantidadpresentacion > 0 );
+
+CREATE TABLE productobodega (
+    costopromedio         NUMBER NOT NULL,
+    cantidadproducto      NUMBER NOT NULL,
+    nivelreorden          NUMBER NOT NULL,
+    capacidadproducto     NUMBER NOT NULL,
+    producto_codigobarras NUMBER NOT NULL,
+    bodega_id             NUMBER NOT NULL
+);
+
+ALTER TABLE productobodega ADD CONSTRAINT productobodega_pk PRIMARY KEY ( producto_codigobarras,
+                                                                    bodega_id );
+
+CREATE TABLE productocompra (
+    precioacordado        NUMBER NOT NULL,
+    cantidad              NUMBER NOT NULL,
+    ordencompra_id        NUMBER NOT NULL,
+    producto_codigobarras NUMBER NOT NULL
+);
+
+CREATE TABLE productoperecedero (
+    codigobarras     NUMBER NOT NULL,
+    fechavencimiento DATE
+);
+
+ALTER TABLE productoperecedero ADD CONSTRAINT productoperecedero_pk PRIMARY KEY ( codigobarras );
+
+CREATE TABLE proveedor (
+    nit             NUMBER NOT NULL,
+    nombre          VARCHAR2(255 BYTE) NOT NULL,
+    direccion       VARCHAR2(255 BYTE) NOT NULL,
+    nombrepersona   VARCHAR2(255 BYTE) NOT NULL,
+    telefonopersona NUMBER NOT NULL
+);
+
+ALTER TABLE proveedor ADD CONSTRAINT proveedor_pk PRIMARY KEY ( nit );
+ALTER TABLE proveedor ADD CONSTRAINT proveedortelefono_ck CHECK ( telefonopersona > 0 );
+ALTER TABLE proveedor ADD CONSTRAINT proveedortelefono_uk  UNIQUE ( telefonopersona );
+
+CREATE TABLE recepcion (
+    id             NUMBER NOT NULL,
+    fecharecepcion DATE NOT NULL,
+    bodega_id      NUMBER NOT NULL,
+    ordencompra_id NUMBER NOT NULL
+);
+
+CREATE UNIQUE INDEX recepcionproducto__idx ON
+    recepcion (
+        ordencompra_id
+    ASC );
+
+ALTER TABLE recepcion ADD CONSTRAINT recepcion_pk PRIMARY KEY ( id );
+
+CREATE TABLE productoproveedor (
+    producto_codigobarras NUMBER NOT NULL,
+    proveedor_nit         NUMBER NOT NULL
+);
+
+ALTER TABLE productoproveedor ADD CONSTRAINT productoproveedor_pk PRIMARY KEY ( producto_codigobarras,
+                                                                    proveedor_nit );
+
+CREATE TABLE sucursal (
+    id            NUMBER NOT NULL,
+    nombre        VARCHAR2(255 BYTE) NOT NULL,
+    tamanio       NUMBER NOT NULL,
+    direccion     VARCHAR2(255 BYTE) NOT NULL,
+    ciudad_codigo NUMBER NOT NULL
+);
+
+ALTER TABLE sucursal ADD CONSTRAINT sucursal_pk PRIMARY KEY ( id );
+ALTER TABLE sucursal ADD CONSTRAINT sucursaltamanio_ck CHECK ( tamanio > 0 );
+
+ALTER TABLE bodega
+    ADD CONSTRAINT bodega_sucursal_fk FOREIGN KEY ( sucursal_id )
+        REFERENCES sucursal ( id );
+
+ALTER TABLE ordencompra
+    ADD CONSTRAINT ordencompra_proveedor_fk FOREIGN KEY ( proveedor_nit )
+        REFERENCES proveedor ( nit );
+
+ALTER TABLE ordencompra
+    ADD CONSTRAINT ordencompra_sucursal_fk FOREIGN KEY ( sucursal_id )
+        REFERENCES sucursal ( id );
+
+ALTER TABLE producto
+    ADD CONSTRAINT producto_categoria_fk FOREIGN KEY ( categoria_codigo )
+        REFERENCES categoria ( codigo );
+
+ALTER TABLE producto
+    ADD CONSTRAINT producto_empaque_fk FOREIGN KEY ( empaque_id )
+        REFERENCES empaque ( id );
+
+ALTER TABLE productobodega
+    ADD CONSTRAINT productobodega_bodega_fk FOREIGN KEY ( bodega_id )
+        REFERENCES bodega ( id );
+
+ALTER TABLE productobodega
+    ADD CONSTRAINT productobodega_producto_fk FOREIGN KEY ( producto_codigobarras )
+        REFERENCES producto ( codigobarras );
+
+ALTER TABLE productocompra
+    ADD CONSTRAINT productocompra_ordencompra_fk FOREIGN KEY ( ordencompra_id )
+        REFERENCES ordencompra ( id );
+
+ALTER TABLE productocompra
+    ADD CONSTRAINT productocompra_producto_fk FOREIGN KEY ( producto_codigobarras )
+        REFERENCES producto ( codigobarras );
+
+ALTER TABLE productoperecedero
+    ADD CONSTRAINT productoperecedero_producto_fk FOREIGN KEY ( codigobarras )
+        REFERENCES producto ( codigobarras );
+
+ALTER TABLE recepcion
+    ADD CONSTRAINT recepcion_orden_fk FOREIGN KEY ( ordencompra_id )
+        REFERENCES ordencompra ( id );
+
+ALTER TABLE recepcion
+    ADD CONSTRAINT recepcion_bodega_fk FOREIGN KEY ( bodega_id )
+        REFERENCES bodega ( id );
+
+ALTER TABLE productoproveedor
+    ADD CONSTRAINT pp_producto_fk FOREIGN KEY ( producto_codigobarras )
+        REFERENCES producto ( codigobarras );
+
+ALTER TABLE productoproveedor
+    ADD CONSTRAINT pp_proveedor_fk FOREIGN KEY ( proveedor_nit )
+        REFERENCES proveedor ( nit );
+
+ALTER TABLE sucursal
+    ADD CONSTRAINT sucursal_ciudad_fk FOREIGN KEY ( ciudad_codigo )
+        REFERENCES ciudad ( codigo );
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Insert cities
+INSERT INTO ciudad (codigo, nombre) VALUES (ciudad_sequence.NEXTVAL, 'Bogota');
+INSERT INTO ciudad (codigo, nombre) VALUES (ciudad_sequence.NEXTVAL, 'Bucaramanga');
+
+-- Insert branches (sucursales)
+INSERT INTO sucursal (id, nombre, tamanio, direccion, ciudad_codigo) 
+VALUES (sucursal_sequence.NEXTVAL, 'Sucursal Occidente', 100, 'Calle 1', (SELECT codigo FROM ciudad WHERE nombre = 'Bogota'));
+INSERT INTO sucursal (id, nombre, tamanio, direccion, ciudad_codigo) 
+VALUES (sucursal_sequence.NEXTVAL, 'Sucursal Oriente', 150, 'Calle 2', (SELECT codigo FROM ciudad WHERE nombre = 'Bogota'));
+INSERT INTO sucursal (id, nombre, tamanio, direccion, ciudad_codigo) 
+VALUES (sucursal_sequence.NEXTVAL, 'Sucursal Norte', 120, 'Calle 3', (SELECT codigo FROM ciudad WHERE nombre = 'Bucaramanga'));
+INSERT INTO sucursal (id, nombre, tamanio, direccion, ciudad_codigo) 
+VALUES (sucursal_sequence.NEXTVAL, 'Sucursal Sur', 130, 'Calle 4', (SELECT codigo FROM ciudad WHERE nombre = 'Bucaramanga'));
+
+-- Insert warehouses (bodegas)
+INSERT INTO bodega (id, nombre, tamanio, sucursal_id) 
+VALUES (bodega_sequence.NEXTVAL, 'Bodega Occidente', 50, (SELECT id FROM sucursal WHERE nombre = 'Sucursal Occidente'));
+INSERT INTO bodega (id, nombre, tamanio, sucursal_id) 
+VALUES (bodega_sequence.NEXTVAL, 'Bodega Oriente', 60, (SELECT id FROM sucursal WHERE nombre = 'Sucursal Oriente'));
+INSERT INTO bodega (id, nombre, tamanio, sucursal_id) 
+VALUES (bodega_sequence.NEXTVAL, 'Bodega Norte', 55, (SELECT id FROM sucursal WHERE nombre = 'Sucursal Norte'));
+INSERT INTO bodega (id, nombre, tamanio, sucursal_id) 
+VALUES (bodega_sequence.NEXTVAL, 'Bodega Sur', 70, (SELECT id FROM sucursal WHERE nombre = 'Sucursal Sur'));
+
+-- Insert product categories
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Aseo', 'Productos de limpieza y aseo', 'Almacenar lejos de alimentos');
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Congelados', 'Productos congelados', 'Mantener a -18°C');
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Prendas de vestir', 'Ropa y accesorios', 'Almacenar en lugar seco');
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Muebles', 'Muebles para hogar y oficina', 'Proteger de humedad y golpes');
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Herramientas', 'Herramientas manuales y eléctricas', 'Almacenar en lugar seco');
+INSERT INTO categoria (codigo, nombre, descripcion, caracteristicasalmacenaje) 
+VALUES (categoria_sequence.NEXTVAL, 'Electrodomésticos', 'Electrodomésticos de cocina y hogar', 'Almacenar en lugar fresco y seco');
+
+-- Insert packaging (empaque)
+INSERT INTO empaque (id, volumenempaque, pesoempaque) 
+VALUES (empaque_sequence.NEXTVAL, 500, 200);
+INSERT INTO empaque (id, volumenempaque, pesoempaque) 
+VALUES (empaque_sequence.NEXTVAL, 1000, 500);
+INSERT INTO empaque (id, volumenempaque, pesoempaque) 
+VALUES (empaque_sequence.NEXTVAL, 750, 300);
+
+-- Insert products (3 per category)
+-- Category: Aseo
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Jabón Líquido', 1200, 1400, 'Botella', 500, 'ml', TO_DATE('2026-08-15', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Aseo'), (SELECT id FROM empaque WHERE volumenempaque = 500));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Detergente en Polvo', 1500, 1800, 'Bolsa', 1000, 'g', TO_DATE('2026-08-20', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Aseo'), (SELECT id FROM empaque WHERE volumenempaque = 750));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Desinfectante', 1000, 1200, 'Botella', 1000, 'ml', TO_DATE('2026-09-01', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Aseo'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+
+-- Category: Congelados
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Helado de Vainilla', 500, 700, 'Envase', 500, 'ml', TO_DATE('2025-06-30', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Congelados'), (SELECT id FROM empaque WHERE volumenempaque = 500));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Papas Fritas', 2000, 2500, 'Paquete', 1000, 'g', TO_DATE('2026-01-15', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Congelados'), (SELECT id FROM empaque WHERE volumenempaque = 750));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Carne Congelada', 4000, 4500, 'Paquete', 1000, 'g', TO_DATE('2026-03-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Congelados'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+
+-- Category: Prendas de vestir
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Camisa', 15000, 18000, 'Unidad', 1, 'unidad', TO_DATE('2025-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Prendas de vestir'), (SELECT id FROM empaque WHERE volumenempaque = 500));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Pantalón', 25000, 28000, 'Unidad', 1, 'unidad', TO_DATE('2025-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Prendas de vestir'), (SELECT id FROM empaque WHERE volumenempaque = 750));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Chaqueta', 30000, 35000, 'Unidad', 1, 'unidad', TO_DATE('2025-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Prendas de vestir'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+
+-- Category: Muebles
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Mesa', 50000, 55000, 'Unidad', 1, 'unidad', TO_DATE('2026-01-15', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Muebles'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Silla', 10000, 15000, 'Unidad', 1, 'unidad', TO_DATE('2026-02-10', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Muebles'), (SELECT id FROM empaque WHERE volumenempaque = 500));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Estante', 30000, 35000, 'Unidad', 1, 'unidad', TO_DATE('2026-02-20', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Muebles'), (SELECT id FROM empaque WHERE volumenempaque = 750));
+
+-- Category: Herramientas
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Martillo', 2000, 3000, 'Unidad', 1, 'unidad', TO_DATE('2027-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Herramientas'), (SELECT id FROM empaque WHERE volumenempaque = 500));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Destornillador', 1000, 1500, 'Unidad', 1, 'unidad', TO_DATE('2027-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Herramientas'), (SELECT id FROM empaque WHERE volumenempaque = 750));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Taladro', 10000, 12000, 'Unidad', 1, 'unidad', TO_DATE('2027-12-31', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Herramientas'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+
+-- Category: Electrodomésticos
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Licuadora', 80000, 85000, 'Unidad', 1, 'unidad', TO_DATE('2026-08-15', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Electrodomésticos'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Microondas', 120000, 125000, 'Unidad', 1, 'unidad', TO_DATE('2026-09-20', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Electrodomésticos'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+INSERT INTO producto (codigobarras, nombre, costobodega, costounidad, presentacion, cantidadpresentacion, unidadmedida, fechaexpiracion, categoria_codigo, empaque_id)
+VALUES (producto_sequence.NEXTVAL, 'Refrigerador', 300000, 320000, 'Unidad', 1, 'unidad', TO_DATE('2027-01-10', 'YYYY-MM-DD'), (SELECT codigo FROM categoria WHERE nombre = 'Electrodomésticos'), (SELECT id FROM empaque WHERE volumenempaque = 1000));
+
+-- Insert providers (proveedores)
+INSERT INTO proveedor (nit, nombre, direccion, nombrepersona, telefonopersona) VALUES (1, 'Proveedor A', 'Av. Principal', 'Juan Pérez', 3001);
+INSERT INTO proveedor (nit, nombre, direccion, nombrepersona, telefonopersona) VALUES (2, 'Proveedor B', 'Calle Secundaria', 'María García', 3002);
+INSERT INTO proveedor (nit, nombre, direccion, nombrepersona, telefonopersona) VALUES (3, 'Proveedor C', 'Calle Terciaria', 'Carlos Rodríguez', 3003);
+INSERT INTO proveedor (nit, nombre, direccion, nombrepersona, telefonopersona) VALUES (4, 'Proveedor D', 'Carrera Cuarta', 'Ana Gómez', 3004);
+INSERT INTO proveedor (nit, nombre, direccion, nombrepersona, telefonopersona) VALUES (5, 'Proveedor E', 'Avenida Quinto', 'Pedro López', 3005);
+
+-- Insertar datos en la tabla ordencompra (asegurarse de que los IDs de sucursal y NIT de proveedor existan)
+-- Estado inicial es 'Vigente' y la fecha de creación es la fecha actual
+
+INSERT INTO ordencompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit)
+VALUES (ordencompra_sequence.NEXTVAL, TO_DATE('2024-11-01', 'YYYY-MM-DD'), TO_DATE('2024-09-30', 'YYYY-MM-DD'), 'Vigente', 1, 1);
+
+INSERT INTO ordencompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit)
+VALUES (ordencompra_sequence.NEXTVAL, TO_DATE('2024-11-10', 'YYYY-MM-DD'), TO_DATE('2024-09-30', 'YYYY-MM-DD'), 'Vigente', 2, 2);
+
+INSERT INTO ordencompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit)
+VALUES (ordencompra_sequence.NEXTVAL, TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-09-30', 'YYYY-MM-DD'), 'Vigente', 3, 3);
+
+INSERT INTO ordencompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit)
+VALUES (ordencompra_sequence.NEXTVAL, TO_DATE('2024-11-20', 'YYYY-MM-DD'), TO_DATE('2024-09-30', 'YYYY-MM-DD'), 'Vigente', 4, 4);
+
+INSERT INTO ordencompra (id, fechaesperada, fechacreacion, estado, sucursal_id, proveedor_nit)
+VALUES (ordencompra_sequence.NEXTVAL, TO_DATE('2024-11-25', 'YYYY-MM-DD'), TO_DATE('2024-09-30', 'YYYY-MM-DD'), 'Vigente', 1, 5);
+
+
+-- Llenar la tabla productobodega con productos y bodegas ya creados
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (300, 50, 10, 200, 1, 1);
+
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (500, 70, 20, 250, 2, 1);
+
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (200, 100, 15, 300, 3, 2);
+
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (150, 60, 10, 180, 4, 3);
+
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (400, 80, 30, 270, 5, 4);
+
+INSERT INTO productobodega (costopromedio, cantidadproducto, nivelreorden, capacidadproducto, producto_codigobarras, bodega_id)
+VALUES (350, 40, 5, 100, 6, 4);
+
+-- Llenar la tabla productocompra con productos y órdenes de compra ya creados
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (150, 30, 1, 1);
+
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (400, 20, 1, 2);
+
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (250, 25, 2, 3);
+
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (320, 40, 2, 4);
+
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (180, 15, 3, 5);
+
+INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_codigobarras)
+VALUES (210, 10, 3, 6);
+
+-- Llenar la tabla productoperecedero con productos perecederos
+INSERT INTO productoperecedero (codigobarras, fechavencimiento)
+VALUES (1, TO_DATE('2025-12-31', 'YYYY-MM-DD'));
+
+INSERT INTO productoperecedero (codigobarras, fechavencimiento)
+VALUES (2, TO_DATE('2025-11-30', 'YYYY-MM-DD'));
+
+INSERT INTO productoperecedero (codigobarras, fechavencimiento)
+VALUES (3, TO_DATE('2026-01-15', 'YYYY-MM-DD'));
+
+-- Llenar la tabla productoproveedor con relaciones entre productos y proveedores (usar NITs existentes)
+-- Reemplazar los NITs con los valores ya creados en la tabla proveedor
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (1, 1001);
+
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (2, 1002);
+
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (3, 1003);
+
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (4, 1004);
+
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (5, 1005);
+
+INSERT INTO productoproveedor (producto_codigobarras, proveedor_nit)
+VALUES (6, 1001);
+
+-- Llenar la tabla recepcion con información de órdenes de compra y bodegas
+INSERT INTO recepcion (id, fecharecepcion, bodega_id, ordencompra_id)
+VALUES (recepcion_sequence.NEXTVAL, TO_DATE('2024-10-01', 'YYYY-MM-DD'), 1, 1);
+
+INSERT INTO recepcion (id, fecharecepcion, bodega_id, ordencompra_id)
+VALUES (recepcion_sequence.NEXTVAL, TO_DATE('2024-10-02', 'YYYY-MM-DD'), 2, 2);
+
+INSERT INTO recepcion (id, fecharecepcion, bodega_id, ordencompra_id)
+VALUES (recepcion_sequence.NEXTVAL, TO_DATE('2024-10-03', 'YYYY-MM-DD'), 3, 3);
+
+INSERT INTO recepcion (id, fecharecepcion, bodega_id, ordencompra_id)
+VALUES (recepcion_sequence.NEXTVAL, TO_DATE('2024-10-04', 'YYYY-MM-DD'), 4, 4);
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Primero elimina las tablas sin restricciones o claves foráneas
+DROP TABLE productobodega CASCADE CONSTRAINTS;
+DROP TABLE productocompra CASCADE CONSTRAINTS;
+DROP TABLE recepcion CASCADE CONSTRAINTS;
+DROP TABLE productoproveedor CASCADE CONSTRAINTS;
+
+-- Luego elimina las tablas con restricciones de claves foráneas
+DROP TABLE producto CASCADE CONSTRAINTS;
+DROP TABLE productoperecedero CASCADE CONSTRAINTS;
+DROP TABLE bodega CASCADE CONSTRAINTS;
+DROP TABLE ordencompra CASCADE CONSTRAINTS;
+DROP TABLE proveedor CASCADE CONSTRAINTS;
+DROP TABLE sucursal CASCADE CONSTRAINTS;
+DROP TABLE ciudad CASCADE CONSTRAINTS;
+DROP TABLE categoria CASCADE CONSTRAINTS;
+DROP TABLE empaque CASCADE CONSTRAINTS;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Reiniciar la secuencia de ciudad
+ALTER SEQUENCE ciudad_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de sucursal
+ALTER SEQUENCE sucursal_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de bodega
+ALTER SEQUENCE bodega_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de categoria
+ALTER SEQUENCE categoria_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de empaque
+ALTER SEQUENCE empaque_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de producto
+ALTER SEQUENCE producto_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de ordencompra
+ALTER SEQUENCE ordencompra_sequence RESTART START WITH 1;
+
+-- Reiniciar la secuencia de recepcion
+ALTER SEQUENCE recepcion_sequence RESTART START WITH 1;
+
+DROP SEQUENCE ciudad_sequence;
+DROP SEQUENCE sucursal_sequence;
+DROP SEQUENCE bodega_sequence;
+DROP SEQUENCE categoria_sequence;
+DROP SEQUENCE empaque_sequence;
+DROP SEQUENCE producto_sequence;
+DROP SEQUENCE ordencompra_sequence;
+DROP SEQUENCE recepcion_sequence;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aquí tienes los JSON para crear las entidades en el orden correcto:
+
+### 1. **Ciudad**
+```json
+{
+    "nombre": "Bogota"
+}
+```
+
+### 2. **Categoria**
+```json
+{
+    "nombre": "Electrodomésticos",
+    "descripcion": "Productos electrónicos para el hogar",
+    "caracteristicasAlmacenaje": "Almacenaje en ambientes secos"
+}
+```
+
+### 3. **Empaque**
+```json
+{
+    "volumenEmpaque": 50,
+    "pesoEmpaque": 10
+}
+```
+
+### 4. **Proveedor**
+```json
+{
+    "nit": 123456,
+    "nombre": "Proveedor Principal",
+    "direccion": "Calle 123",
+    "nombrePersona": "Juan Perez",
+    "telefonoPersona": 987654321
+}
+```
+
+### 5. **Sucursal**
+```json
+{
+    "nombre": "Sucursal Central",
+    "tamanio": 1000,
+    "direccion": "Carrera 45 #67-89",
+    "ciudad": {
+        "codigo": 1  // Suponiendo que este es el código de la ciudad que creaste anteriormente
+    }
+}
+```
+
+### 6. **OrdenCompra**
+```json
+{
+    "fechaEsperada": "2024-12-12",
+    "fechaCreacion": "2024-09-29",
+    "estado": "Enviada",
+    "sucursal": {
+        "id": 1  // Suponiendo que este es el ID de la sucursal creada anteriormente
+    },
+    "proveedor": {
+        "nit": 123456  // NIT del proveedor creado anteriormente
+    }
+}
+```
+
+### 7. **Bodega**
+```json
+{
+    "nombre": "Bodega Principal",
+    "tamanio": 500,
+    "sucursal": {
+        "id": 1  // ID de la sucursal creada anteriormente
+    }
+}
+```
+
+### 8. **Producto**
+```json
+{
+    "nombre": "Televisor",
+    "costoBodega": 500000,
+    "costoUnidad": 550000,
+    "presentacion": "Caja",
+    "cantidadPresentacion": 10,
+    "unidadMedida": "Unidades",
+    "fechaExpiracion": "2025-12-12",
+    "categoria": {
+        "codigo": 1  // Código de la categoría creada anteriormente
+    },
+    "empaque": {
+        "id": 1  // ID del empaque creado anteriormente
+    }
+}
+```
+
+### 9. **Recepcion**
+```json
+{
+    "fechaRecepcion": "2024-09-29",
+    "bodega": {
+        "id": 1  // ID de la bodega creada anteriormente
+    },
+    "ordenCompra": {
+        "id": 1  // ID de la orden de compra creada anteriormente
+    }
+}
+```
+
+### 10. **ProductoBodega**
+```json
+{
+    "costoPromedio": 500000,
+    "cantidadProducto": 20,
+    "nivelReorden": 5,
+    "capacidadProducto": 100,
+    "pk": {
+        "producto": {
+            "codigoBarras": 1  // Código de barras del producto creado anteriormente
+        },
+        "bodega": {
+            "id": 1  // ID de la bodega creada anteriormente
+        }
+    }
+}
+```
+
+### 11. **ProductoCompra**
+```json
+{
+    "precioAcordado": 550000,
+    "cantidad": 10,
+    "pk": {
+        "producto": {
+            "codigoBarras": 1  // Código de barras del producto creado anteriormente
+        },
+        "ordenCompra": {
+            "id": 1  // ID de la orden de compra creada anteriormente
+        }
+    }
+}
+```
+
+### 12. **ProductoProveedor**
+```json
+{
+    "pk": {
+        "producto": {
+            "codigoBarras": 1  // Código de barras del producto creado anteriormente
+        },
+        "proveedor": {
+            "nit": 123456  // NIT del proveedor creado anteriormente
+        }
+    }
+}
+```
+
+Asegúrate de ajustar los IDs y referencias según los valores reales de tu base de datos al realizar los `POST` en esta secuencia.

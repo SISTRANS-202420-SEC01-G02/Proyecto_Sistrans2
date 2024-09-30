@@ -16,9 +16,12 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 
     @Query(value = "SELECT * FROM Categoria", nativeQuery = true)
     Collection<Categoria> darCategorias();
-    
+
     @Query(value = "SELECT * FROM Categoria WHERE codigo = :codigo", nativeQuery = true)
-    Categoria darCategoria(@Param("codigo") int codigo);
+    Categoria darCategoriaPorCodigo(@Param("codigo") int codigo);
+
+    @Query(value = "SELECT * FROM Categoria WHERE nombre = :nombre", nativeQuery = true)
+    Categoria darCategoriaPorNombre(@Param("nombre") String nombre);
     
     @Modifying
     @Transactional

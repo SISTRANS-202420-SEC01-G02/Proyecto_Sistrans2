@@ -25,6 +25,34 @@ public class CategoriaController {
         return categoriaRepository.darCategorias();
     }
 
+    @GetMapping("/categoria/codigo/{codigo}")
+    public ResponseEntity<Categoria> obtenerCategoriaPorCodigo(@PathVariable("codigo") int codigo) {
+        try {
+            Categoria categoria = categoriaRepository.darCategoriaPorCodigo(codigo);
+            if (categoria != null) {
+                return new ResponseEntity<>(categoria, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/categoria/nombre/{nombre}")
+    public ResponseEntity<Categoria> obtenerCategoriaPorNombre(@PathVariable("nombre") String nombre) {
+        try {
+            Categoria categoria = categoriaRepository.darCategoriaPorNombre(nombre);
+            if (categoria != null) {
+                return new ResponseEntity<>(categoria, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/categoria/new/save")
     public ResponseEntity<String> guardarCategoria(@RequestBody Categoria categoria) {
         try {

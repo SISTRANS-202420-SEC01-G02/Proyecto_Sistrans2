@@ -138,9 +138,14 @@ CREATE TABLE productocompra (
 );
 
 CREATE TABLE productoperecedero (
-    codigobarras     NUMBER NOT NULL,
+    producto_codigobarras     NUMBER NOT NULL,
     fechavencimiento DATE
 );
+
+CREATE UNIQUE INDEX productoperecedero__idx ON
+    productoperecedero (
+        producto_codigobarras
+    ASC );
 
 ALTER TABLE productoperecedero ADD CONSTRAINT productoperecedero_pk PRIMARY KEY ( codigobarras );
 
@@ -226,7 +231,7 @@ ALTER TABLE productocompra
         REFERENCES producto ( codigobarras );
 
 ALTER TABLE productoperecedero
-    ADD CONSTRAINT productoperecedero_producto_fk FOREIGN KEY ( codigobarras )
+    ADD CONSTRAINT productoperecedero_producto_fk FOREIGN KEY ( producto_codigobarras )
         REFERENCES producto ( codigobarras );
 
 ALTER TABLE recepcion
@@ -410,7 +415,7 @@ INSERT INTO productocompra (precioacordado, cantidad, ordencompra_id, producto_c
 VALUES (210, 10, 3, 6);
 
 -- Llenar la tabla productoperecedero con productos perecederos
-INSERT INTO productoperecedero (codigobarras, fechavencimiento)
+INSERT INTO productoperecedero (producto_codigobarras, fechavencimiento)
 VALUES (1, TO_DATE('2025-12-31', 'YYYY-MM-DD'));
 
 INSERT INTO productoperecedero (codigobarras, fechavencimiento)

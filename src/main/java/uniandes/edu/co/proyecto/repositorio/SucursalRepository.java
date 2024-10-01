@@ -34,4 +34,13 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Integer> {
     @Transactional
     @Query(value = "DELETE FROM sucursal WHERE id=:id", nativeQuery = true)
     void eliminarSucursal(@Param("id") int id);
+
+    @Query(value = "SELECT suc.* " +
+               "FROM productobodega pb " +
+               "INNER JOIN bodega bod ON pb.bodega_id = bod.id " + 
+               "INNER JOIN sucursal suc ON bod.sucursal_id = suc.id " + 
+               "INNER JOIN producto prod ON pb.producto_codigobarras = prod.codigobarras " + 
+               "WHERE prod.codigobarras = :codigobarras OR prod.nombre = :nombre_producto", nativeQuery = true)
+    Collection<Sucursal> mostrarSucursalesProdDisponibles(@Param("codigobarras") int codigobarras, @Param("nombre_producto") String nombre);
+
 }

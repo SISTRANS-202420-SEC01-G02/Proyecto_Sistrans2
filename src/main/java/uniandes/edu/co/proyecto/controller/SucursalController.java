@@ -25,6 +25,13 @@ public class SucursalController {
         return sucursalRepository.darSucursales();
     }
 
+    @GetMapping("/sucursal/rfc4/{codigobarras}/{nombre}")
+    public Collection<Sucursal> mostrarSucursalesProductoDisponibles(
+        @PathVariable("codigobarras") int codigobarras, 
+        @PathVariable("nombre") String nombre) {
+            return sucursalRepository.mostrarSucursalesProdDisponibles(codigobarras, nombre);
+    }
+
     @PostMapping("/sucursal/new/save")
     public ResponseEntity<String> guardarSucursal(@RequestBody Sucursal sucursal) {
         try {

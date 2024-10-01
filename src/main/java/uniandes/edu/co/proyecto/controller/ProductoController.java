@@ -1,8 +1,12 @@
 package uniandes.edu.co.proyecto.controller;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.Producto;
 import uniandes.edu.co.proyecto.repositorio.ProductoRepository;
+import uniandes.edu.co.proyecto.repositorio.ProductoRepository.ProductoRequiereReorden;
 
 @RestController
 public class ProductoController {
@@ -33,6 +38,29 @@ public class ProductoController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/producto/rfc5")
+    public ResponseEntity<?> productoRFC5(){
+        try{
+            Collection<ProductoRequiereReorden> informacion = productoRepository.obtenerProductosRequierenReorden();
+            ProductoRequiereReorden info = informacion.iterator().next();
+            Map<String, Object> response = new HashMap<>();
+            response.put("producto_codigobarras", info.getProductoId());
+            response.put("producto_nombre", info.getProductoNombre());
+            response.put("bodega_id", info.getBodegaId());
+            response.put("bodega_nombre", info.getBodegaNombre());
+            response.put("sucursal_id", info.getSucursalId());
+            response.put("sucursal_nombre", info.getSucursalNombre());
+            response.put("proveedor_nit", info.getProveedorNit());
+            response.put("proveedor_nombre", info.getProveedorNombre());
+            response.put("pb_cantidadActual", info.getCantidadActual());
+
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            return new ResponseEntity<>("Falló", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/producto/nombre/{nombre}")
     public ResponseEntity<Producto> darProductoNombre(@PathVariable("nombre") String nombre){
@@ -71,6 +99,27 @@ public class ProductoController {
             return new ResponseEntity<>("Producto eliminado exitosamente", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("El producto no se eliminó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/producto/filtrar/{precio_min}/{precio_max}/{fechavencimiento}/{sucursal_id}/{nombre_categoria}")
+    public ResponseEntity<Collection<Producto>> filtrarProductos(
+            @PathVariable("precio_min") int precioMin,
+            @PathVariable("precio_max") int precioMax,
+            @PathVariable("fechavencimiento")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaVencimiento,
+            @PathVariable("sucursal_id") int sucursalId,
+            @PathVariable("nombre_categoria") String nombreCategoria) {
+        try {
+            Collection<Producto> productos = productoRepository.encontrarProductosFiltrados(
+                    precioMin, 
+                    precioMax, 
+                    fechaVencimiento, 
+                    sucursalId, 
+                    nombreCategoria);
+
+            return new ResponseEntity<>(productos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

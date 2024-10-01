@@ -25,6 +25,11 @@ public class ProductoBodegaController {
         return productoBodegaRepository.darProductosBodega();
     }
 
+    @GetMapping("/productobodega/rfc3/{sucursal_id}/{bodega_id}")
+    public Collection<ProductoBodega> productoBodegaRFC5(@PathVariable("sucursal_id") Integer sucursal_id, @PathVariable("bodega_id") Integer bodega_id){
+            return productoBodegaRepository.rFC3(sucursal_id, bodega_id);
+    }
+
     @PostMapping("/productobodega/new/save")
     public ResponseEntity<String> guardarProductoBodega(@RequestBody ProductoBodega productoBodega) {
         try {

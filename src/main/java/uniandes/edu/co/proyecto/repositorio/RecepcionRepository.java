@@ -58,5 +58,6 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
                     "WHERE PB.bodega_id = :bodega_id AND PB.producto_codigobarras IN (SELECT ProductoCompra.producto_codigobarras FROM OrdenCompra INNER JOIN ProductoCompra,ordencompra_id = OrdenCompra.id WHERE OrdenCompra.id = :ordencompra_id) ", nativeQuery = true)
     void actualizarProductoBodega(@Param("bodega_id") int bodega_id, @Param("ordencompra_id") int ordencompra_id);
 
-
+    @Query(value = "select r.* from recepcion r inner join ordencompra on r.ordencompra_id = ordencompra .id where r.bodega_id = :idB and ordencompra.sucursal_id = :idS", nativeQuery = true)
+    Collection<Recepcion> obtenerRecepcionRfc6( @Param("idB") int idB, @Param("idS") int idS);
 }

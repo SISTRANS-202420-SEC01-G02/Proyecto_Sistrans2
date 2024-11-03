@@ -1,10 +1,13 @@
 package uniandes.edu.co.proyecto.servicio;
 
 
+import java.util.Collection;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import uniandes.edu.co.proyecto.modelo.Recepcion;
 import uniandes.edu.co.proyecto.repositorio.OrdenCompraRepository;
 import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
 
@@ -44,6 +47,16 @@ public class RecepcionService {
             System.out.println("No se puede actualizar la recepcion de productos");
         }
 
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
+    public Collection<Recepcion> consusltarRfc6(int idB, int idS) throws InterruptedException {
+        Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcionRfc6(idB, idS); // Consultar bar.
+        System.out.println(recepcions.size());
+        Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
+        recepcions = recepcionRepository.obtenerRecepcionRfc6(idB, idS); // Consultar bar.
+        return recepcions
+        ;
     }
     
 }

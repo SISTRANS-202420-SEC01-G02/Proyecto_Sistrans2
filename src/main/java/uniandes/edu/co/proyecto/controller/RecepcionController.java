@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import uniandes.edu.co.proyecto.modelo.Recepcion;
 import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
 import uniandes.edu.co.proyecto.servicio.RecepcionService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class RecepcionController {
@@ -69,4 +72,18 @@ public class RecepcionController {
             return new ResponseEntity<>("La recepción no se eliminó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/recepcion/rfc6/{idS}/{idB}")
+    public String consultaRfc6(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes){
+        try {
+            // llamar service
+            recepcionService.consusltarRfc6(idS, idB);
+        } catch (Exception e) {
+            System.err.println("Error durante la consulta de recepciones: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "No se pudo consultar las recepciones correctamente.");
+            return "redirect:/recepcion";
+        }
+        return "redirect:/recepcion";
+    }
+    
 }

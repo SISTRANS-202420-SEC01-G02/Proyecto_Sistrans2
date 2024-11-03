@@ -34,7 +34,7 @@ public class RecepcionController {
         return recepcionRepository.darRecepcionRF10(recepcion_id);
     }
 
-    @PostMapping("/recepcion/{ordencompra_id}/{bodega_id]")
+    @PostMapping("/recepcion/{ordencompra_id}/{bodega_id}")
     public ResponseEntity<String> guardarRecepcion(@PathVariable("ordencompra_id") int ordencompra_id, @PathVariable("bodega_id") int bodega_id) {
         try {
             recepcionService.recepcionRF10(ordencompra_id,bodega_id);

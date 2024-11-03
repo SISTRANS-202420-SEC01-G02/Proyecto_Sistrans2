@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uniandes.edu.co.proyecto.modelo.Recepcion;
 import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
+import uniandes.edu.co.proyecto.servicio.RecepcionService;
 
 @RestController
 public class RecepcionController {
@@ -20,18 +21,24 @@ public class RecepcionController {
     @Autowired
     private RecepcionRepository recepcionRepository;
 
+    @Autowired
+    private RecepcionService recepcionService;
+
     @GetMapping("/recepcion")
     public Collection<Recepcion> recepciones() {
         return recepcionRepository.darRecepciones();
     }
 
-    @PostMapping("/recepcion/new/save")
-    public ResponseEntity<String> guardarRecepcion(@RequestBody Recepcion recepcion) {
-        try {
-            recepcionRepository.insertarRecepcion(
-                    recepcion.getFechaRecepcion()
+    @GetMapping("/recepcion/{recepcion_id}")
+    public Recepcion darRecepcionRF10(@PathVariable("recepcion_id") int recepcion_id) {
+        return recepcionRepository.darRecepcionRF10(recepcion_id);
+    }
 
-            );
+    @PostMapping("/recepcion/{ordencompra_id}/{bodega_id]")
+    public ResponseEntity<String> guardarRecepcion(@PathVariable("ordencompra_id") int ordencompra_id, @PathVariable("bodega_id") int bodega_id) {
+        try {
+            recepcionService.recepcionRF10(ordencompra_id,bodega_id);
+            recepcionService.actualizarProductoBodega(ordencompra_id, bodega_id);
             return new ResponseEntity<>("Recepción creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la Recepción", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -20,10 +20,21 @@ public class Recepcion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recepcion_sequence_gen")
-    @SequenceGenerator(name = "recepcion_sequence_gen", sequenceName = "recepcion_sequence", allocationSize = 1)    @Column(name = "id")
+    @SequenceGenerator(name = "recepcion_sequence_gen", sequenceName = "recepcion_sequence", allocationSize = 1)    
+    @Column(name = "id")
     private Integer id;
+
     @Column(name = "fecharecepcion")
     private Date fechaRecepcion;
+
+    @Column(name = "sucursal_nombre")
+    private String sucursalNombre;
+
+    @Column(name = "proveedor_nombre")
+    private String proveedorNombre;
+
+    @Column(name = "bodega_nombre")
+    private String bodegaNombre;
 
     // FOREIGN KEYS
 
@@ -35,9 +46,12 @@ public class Recepcion {
     @JoinColumn(name = "ordencompra_id", referencedColumnName = "id")
     private OrdenCompra ordenCompra;
 
-    public Recepcion(Date fecharecepcion){
+    public Recepcion(Date fecharecepcion, String sucursalNombre, String proveedorNombre, String bodegaNombre){
 
         this.fechaRecepcion = fecharecepcion;
+        this.sucursalNombre = sucursalNombre;
+        this.proveedorNombre = proveedorNombre;
+        this.bodegaNombre = bodegaNombre;
 
     }
 
@@ -77,6 +91,29 @@ public class Recepcion {
     public void setBodega(Bodega bodega) {
         this.bodega = bodega;
     }
-    
+
+    public String getSucursalNombre() {
+        return sucursalNombre;
+    }
+
+    public void setSucursalNombre(String sucursalNombre) {
+        this.sucursalNombre = sucursalNombre;
+    }
+
+    public String getProveedorNombre() {
+        return proveedorNombre;
+    }
+
+    public void setProveedorNombre(String proveedorNombre) {
+        this.proveedorNombre = proveedorNombre;
+    }
+
+    public String getBodegaNombre() {
+        return bodegaNombre;
+    }
+
+    public void setBodegaNombre(String bodegaNombre) {
+        this.bodegaNombre = bodegaNombre;
+    }
     
 }

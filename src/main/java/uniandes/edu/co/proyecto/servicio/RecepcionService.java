@@ -51,10 +51,20 @@ public class RecepcionService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
     public Collection<Recepcion> consusltarRfc6(int idB, int idS) throws InterruptedException {
-        Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcionRfc6(idB, idS); // Consultar bar.
+        Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         System.out.println(recepcions.size());
         Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
-        recepcions = recepcionRepository.obtenerRecepcionRfc6(idB, idS); // Consultar bar.
+        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        return recepcions
+        ;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public Collection<Recepcion> consusltarRfc7(int idB, int idS) throws InterruptedException {
+        Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        System.out.println(recepcions.size());
+        Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
+        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         return recepcions
         ;
     }

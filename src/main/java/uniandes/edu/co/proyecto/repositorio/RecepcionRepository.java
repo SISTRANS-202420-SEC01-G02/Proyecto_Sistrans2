@@ -59,5 +59,5 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
     void actualizarProductoBodega(@Param("bodega_id") int bodega_id, @Param("ordencompra_id") int ordencompra_id);
 
     @Query(value = "select r.* from recepcion r inner join ordencompra on r.ordencompra_id = ordencompra .id where r.bodega_id = :idB and ordencompra.sucursal_id = :idS", nativeQuery = true)
-    Collection<Recepcion> obtenerRecepcionRfc6( @Param("idB") int idB, @Param("idS") int idS);
+    Collection<Recepcion> obtenerRecepcion( @Param("idB") int idB, @Param("idS") int idS);
 }

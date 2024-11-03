@@ -85,5 +85,18 @@ public class RecepcionController {
         }
         return "redirect:/recepcion";
     }
+
+    @GetMapping("/recepcion/rfc7/{idS}/{idB}")
+    public String consultaRfc7(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes){
+        try {
+            // llamar service
+            recepcionService.consusltarRfc7(idS, idB);
+        } catch (Exception e) {
+            System.err.println("Error durante la consulta de recepciones: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "No se pudo consultar las recepciones correctamente.");
+            return "redirect:/recepcion";
+        }
+        return "redirect:/recepcion";
+    }
     
 }

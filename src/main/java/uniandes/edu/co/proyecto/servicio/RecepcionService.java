@@ -3,6 +3,7 @@ package uniandes.edu.co.proyecto.servicio;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +15,12 @@ import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
 @Service
 public class RecepcionService {
 
+
+    @Autowired
     private RecepcionRepository recepcionRepository;
 
+
+    @Autowired
     private OrdenCompraRepository ordenCompraRepository;
 
     public RecepcionService(RecepcionRepository recepcionRepository){

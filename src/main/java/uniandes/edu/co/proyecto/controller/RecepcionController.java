@@ -37,11 +37,16 @@ public class RecepcionController {
         return recepcionRepository.darRecepcionRF10(recepcion_id);
     }
 
-    @PostMapping("/recepcion/{ordencompra_id}/{bodega_id}")
-    public ResponseEntity<String> guardarRecepcion(@PathVariable("ordencompra_id") int ordencompra_id, @PathVariable("bodega_id") int bodega_id) {
+    @PostMapping("/recepcion/new/save")
+    public ResponseEntity<String> guardarRecepcion(@RequestBody Recepcion recepcion) {
         try {
-            recepcionService.recepcionRF10(ordencompra_id,bodega_id);
-            recepcionService.actualizarProductoBodega(ordencompra_id, bodega_id);
+            int ordenCompraId = recepcion.getOrdenCompra().getId();
+            int bodegaId = recepcion.getBodega().getId();
+            System.out.println("OrdenCompra ID: " + ordenCompraId);
+            System.out.println("Bodega ID: " + bodegaId);
+
+            recepcionService.recepcionRF10(ordenCompraId, bodegaId);
+            recepcionService.actualizarProductoBodega(ordenCompraId, bodegaId);
             return new ResponseEntity<>("Recepción creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la Recepción", HttpStatus.INTERNAL_SERVER_ERROR);

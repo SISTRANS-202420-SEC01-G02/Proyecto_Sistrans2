@@ -33,8 +33,8 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO recepcion (id, fecharecepcion, bodega_id, ordencompra_id, sucursal_nombre, proveedor_nombre, bodega_nombre) " +//
-                    "VALUES(recepcion_sequence.NEXTVAL,"+//
-                    "(SELECT OrdenCompra.fechaesperada FROM OrdenCompra WHERE OrdenCompra.id = :ordencompra_id), :bodega_id, :ordencompra_id, "+//
+                    "VALUES(recepcion_sequence.NEXTVAL, "+//
+                    "(SELECT OrdenCompra.fechaesperada FROM OrdenCompra WHERE OrdenCompra.id = :ordencompra_id),:bodega_id,:ordencompra_id, "+//
                     "(SELECT Sucursal.nombre FROM Sucursal INNER JOIN OrdenCompra ON OrdenCompra.sucursal_id = Sucursal.id WHERE OrdenCompra.id = :ordencompra_id), " +//
                     "(SELECT Proveedor.nombre FROM Proveedor INNER JOIN OrdenCompra.proveedor_nit = Proveedor.nit WHERE OrdenCompra.id = :ordencompra_id), "+//
                     "(SELECT Bodega.nombre FROM Bodega WHERE Bodega.id = :bodega_id)) ",nativeQuery = true)

@@ -71,29 +71,14 @@ public class RecepcionController {
     }
 
     @GetMapping("/recepcion/rfc6/{idS}/{idB}")
-    public String consultaRfc6(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes){
-        try {
-            // llamar service
-            recepcionService.consusltarRfc6(idS, idB);
-        } catch (Exception e) {
-            System.err.println("Error durante la consulta de recepciones: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "No se pudo consultar las recepciones correctamente.");
-            return "redirect:/recepcion";
-        }
-        return "redirect:/recepcion";
+    public Collection<Recepcion> consultaRfc6(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes) throws InterruptedException{
+           return recepcionService.consusltarRfc6(idS, idB);
     }
 
     @GetMapping("/recepcion/rfc7/{idS}/{idB}")
-    public String consultaRfc7(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes){
-        try {
-            // llamar service
-            recepcionService.consusltarRfc7(idS, idB);
-        } catch (Exception e) {
-            System.err.println("Error durante la consulta de recepciones: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "No se pudo consultar las recepciones correctamente.");
-            return "redirect:/recepcion";
-        }
-        return "redirect:/recepcion";
+    public Collection<Recepcion> consultaRfc7(@PathVariable("idS") int idS, @PathVariable("idB") int idB, RedirectAttributes redirectAttributes) throws InterruptedException{
+            return recepcionService.consusltarRfc7(idS, idB);
+
     }
     
 }

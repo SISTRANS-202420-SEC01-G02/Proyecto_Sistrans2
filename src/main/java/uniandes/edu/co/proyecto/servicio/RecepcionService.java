@@ -95,9 +95,8 @@ public class RecepcionService {
         Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         System.out.println(recepcions.size());
         Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
-        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
-        return recepcions
-        ;
+        Collection<Recepcion> recepcions2 = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        return recepcions2;
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -105,8 +104,8 @@ public class RecepcionService {
         Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         System.out.println(recepcions.size());
         Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
-        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
-        return recepcions
+        Collection<Recepcion> recepcions2 = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        return recepcions2
         ;
     }
     

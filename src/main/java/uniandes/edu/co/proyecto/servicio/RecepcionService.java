@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import uniandes.edu.co.proyecto.modelo.Bodega;
 import uniandes.edu.co.proyecto.modelo.OrdenCompra;
+import uniandes.edu.co.proyecto.modelo.ProductoCompra;
 import uniandes.edu.co.proyecto.modelo.Recepcion;
 import uniandes.edu.co.proyecto.repositorio.BodegaRepository;
 import uniandes.edu.co.proyecto.repositorio.OrdenCompraRepository;
@@ -36,7 +37,7 @@ public class RecepcionService {
 
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void recepcionRF10(int ordencompra_id, int bodega_id){
 
         try{
@@ -50,6 +51,18 @@ public class RecepcionService {
 
 
             recepcionRepository.insertarRecepcionRF10(ordencompra_id, bodega_id, fechaRecepcion, sucursal_nombre,proveedor_nombre, bodega_nombre);
+            ordenCompraRepository.actualizarOrdenCompra(ordencompra_id, "Entregada");
+            Collection<ProductoCompra> productosCompra = recepcionRepository.darInfoProductoCompra(ordenCompra.getId());
+            for (ProductoCompra prod : productosCompra) {
+                System.out.println("Producto: " + prod.getPk().getProducto_codigobarras().getNombre());
+            }
+
+            for(ProductoCompra prod: productosCompra){
+                int producto_codigobarras = prod.getPk().getProducto_codigobarras().getCodigoBarras();
+                int cantidad = prod.getCantidad();
+                int precioacordado = prod.getPrecioAcordado();
+                recepcionRepository.actualizarProducto(bodega_id, producto_codigobarras, cantidad, precioacordado);
+            }
 
         }catch (Exception e){
             System.out.println("Error al registrar la recepcion de productos.");
@@ -57,12 +70,20 @@ public class RecepcionService {
 
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void actualizarProductoBodega(int ordencompra_id, int bodega_id){
 
         try{
-            recepcionRepository.actualizarProductoBodega(bodega_id, ordencompra_id);
-            ordenCompraRepository.actualizarOrdenCompra(ordencompra_id, "Entregada");
+
+            Collection<ProductoCompra> productosCompra = recepcionRepository.darInfoProductoCompra(ordencompra_id);
+
+            for(ProductoCompra prod: productosCompra){
+                int producto_codigobarras = prod.getPk().getProducto_codigobarras().getCodigoBarras();
+                System.out.println(producto_codigobarras);
+                int cantidad = prod.getCantidad();
+                int precioacordado = prod.getPrecioAcordado();
+                recepcionRepository.actualizarProducto(bodega_id, producto_codigobarras, cantidad, precioacordado);
+            }
         }catch (Exception e){
             System.out.println("No se puede actualizar la recepcion de productos");
         }

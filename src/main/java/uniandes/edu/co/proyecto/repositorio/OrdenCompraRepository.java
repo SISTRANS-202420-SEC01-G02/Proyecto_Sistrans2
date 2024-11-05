@@ -22,7 +22,7 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Intege
     @Query(value = "SELECT * FROM OrdenCompra", nativeQuery = true)
     Collection<OrdenCompra> darOrdenesCompra();
     
-    @Query(value = "SELECT * FROM OrdenCompra WHERE id = :id FOR UPDATE", nativeQuery = true)
+    @Query(value = "SELECT * FROM OrdenCompra WHERE id = :id", nativeQuery = true)
     OrdenCompra darOrdenCompra(@Param("id") int id);
     
     @Modifying

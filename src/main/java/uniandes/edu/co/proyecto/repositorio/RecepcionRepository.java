@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import uniandes.edu.co.proyecto.modelo.ProductoCompra;
 import uniandes.edu.co.proyecto.modelo.Recepcion;
 
 @Repository
@@ -68,6 +69,18 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
     "(SELECT ProductoCompra.producto_codigobarras FROM OrdenCompra INNER JOIN ProductoCompra ON OrdenCompra.id = ProductoCompra.ordencompra_id WHERE OrdenCompra.id = :ordencompra_id)", 
     nativeQuery = true)
     void actualizarProductoBodega(@Param("bodega_id") int bodega_id, @Param("ordencompra_id") int ordencompra_id);
+
+
+    @Query(value = "SELECT productocompra.* FROM productocompra WHERE productocompra.ordencompra_id = :ordencompra_id", nativeQuery = true)
+    Collection<ProductoCompra> darInfoProductoCompra(@Param("ordencompra_id") int ordencompra_id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE ProductoBodega SET "+//
+                    "ProductoBodega.cantidadproducto = ProductoBodega.cantidadproducto + :cantidad "+//
+                    "ProductoBodega.costopromedio = ROUND(((ProductoBodega.cantidadproducto * ProductoBodega.costopromedio) + (:cantidad*:precioacordado))/ProductoBodega.cantidadproducto + :cantidad) "+//
+                    "WHERE ProductoBodega.bodega_id = :bodega_id AND ProductoBodega.producto_codigobarras = :producto_codigobarras", nativeQuery = true)
+    void actualizarProducto(@Param("bodega_id") int bodega_id, @Param("producto_codigobarras") int producto_codigobarras, @Param("cantidad") int cantidad, @Param("precioacordado") int precioacordado);
 
     @Query(value = "select r.* from recepcion r inner join ordencompra on r.ordencompra_id = ordencompra .id where r.bodega_id = :idB and ordencompra.sucursal_id = :idS", nativeQuery = true)
     Collection<Recepcion> obtenerRecepcion( @Param("idB") int idB, @Param("idS") int idS);

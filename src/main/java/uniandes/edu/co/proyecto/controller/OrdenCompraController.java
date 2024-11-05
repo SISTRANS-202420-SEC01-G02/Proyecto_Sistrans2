@@ -47,9 +47,6 @@ public class OrdenCompraController {
         try {
             OrdenCompra ordenActual = ordenCompraRepository.darOrdenCompra(id);
             if (ordenActual != null) {
-                if (ordenActual.getEstado().equals("Entregada")) {
-                    return new ResponseEntity<>("La orden de compra no puede ser modificada porque está en estado 'Entregada'", HttpStatus.BAD_REQUEST);
-                }
                 if (ordenCompra.getEstado().equals("Anulada") && !ordenActual.getEstado().equals("Vigente")) {
                     return new ResponseEntity<>("La orden de compra solo puede ser anulada si está en estado 'Vigente'", HttpStatus.BAD_REQUEST);
                 }

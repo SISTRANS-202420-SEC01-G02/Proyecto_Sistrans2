@@ -39,7 +39,6 @@ public class RecepcionController {
     public ResponseEntity<String> guardarRecepcion(@PathVariable("ordencompra_id") int ordencompra_id, @PathVariable("bodega_id") int bodega_id) {
         try {
             recepcionService.recepcionRF10(ordencompra_id, bodega_id);
-            recepcionService.actualizarProductoBodega(ordencompra_id, bodega_id);
             return new ResponseEntity<>("Recepción creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la Recepción", HttpStatus.INTERNAL_SERVER_ERROR);

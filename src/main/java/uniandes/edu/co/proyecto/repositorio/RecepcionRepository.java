@@ -82,6 +82,6 @@ public interface RecepcionRepository extends JpaRepository<Recepcion, Integer> {
                     "WHERE ProductoBodega.bodega_id = :bodega_id AND ProductoBodega.producto_codigobarras = :producto_codigobarras", nativeQuery = true)
     void actualizarProducto(@Param("bodega_id") int bodega_id, @Param("producto_codigobarras") int producto_codigobarras, @Param("cantidad") int cantidad, @Param("precioacordado") int precioacordado);
 
-    @Query(value = "SELECT r.* FROM recepcion r INNER JOIN ordencompra ON r.ordencompra_id = ordencompra.id WHERE r.fecharecepcion >= CURRENT_DATE - INTERVAL '30' day AND AND r.bodega_id = :idB and ordencompra.sucursal_id = :idS", nativeQuery = true)
+    @Query(value = "SELECT r.* FROM recepcion r INNER JOIN ordencompra ON r.ordencompra_id = ordencompra.id WHERE r.fecharecepcion >= CURRENT_DATE - INTERVAL '30' day AND r.bodega_id = :idB and ordencompra.sucursal_id = :idS", nativeQuery = true)
     Collection<Recepcion> obtenerRecepcion( @Param("idB") int idB, @Param("idS") int idS);
 }

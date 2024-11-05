@@ -19,7 +19,7 @@ public interface BodegaRepository extends JpaRepository<Bodega, Integer>{
     Collection<Bodega> darBodegas();
 
     @Query(value = "SELECT * FROM Bodega WHERE id=:id", nativeQuery = true)
-    Bodega darBodega();
+    Bodega darBodega(@Param("id") int id);
 
     @Modifying
     @Transactional

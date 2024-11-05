@@ -2,13 +2,17 @@ package uniandes.edu.co.proyecto.servicio;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import uniandes.edu.co.proyecto.modelo.Bodega;
+import uniandes.edu.co.proyecto.modelo.OrdenCompra;
 import uniandes.edu.co.proyecto.modelo.Recepcion;
+import uniandes.edu.co.proyecto.repositorio.BodegaRepository;
 import uniandes.edu.co.proyecto.repositorio.OrdenCompraRepository;
 import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
 
@@ -18,6 +22,9 @@ public class RecepcionService {
 
     @Autowired
     private RecepcionRepository recepcionRepository;
+
+    @Autowired 
+    private BodegaRepository bodegaRepository;
 
 
     @Autowired
@@ -34,7 +41,15 @@ public class RecepcionService {
 
         try{
 
-            recepcionRepository.insertarRecepcion(ordencompra_id, bodega_id);
+            OrdenCompra ordenCompra = ordenCompraRepository.darOrdenCompra(ordencompra_id);
+            Date fechaRecepcion = ordenCompra.getFechaEsperada();
+            String sucursal_nombre = ordenCompra.getSucursal().getNombre();
+            String proveedor_nombre = ordenCompra.getProveedor().getNombre();
+            Bodega bodega = bodegaRepository.darBodega(bodega_id);
+            String bodega_nombre = bodega.getNombre();
+
+
+            recepcionRepository.insertarRecepcionRF10(ordencompra_id, bodega_id, fechaRecepcion, sucursal_nombre,proveedor_nombre, bodega_nombre);
 
         }catch (Exception e){
             System.out.println("Error al registrar la recepcion de productos.");

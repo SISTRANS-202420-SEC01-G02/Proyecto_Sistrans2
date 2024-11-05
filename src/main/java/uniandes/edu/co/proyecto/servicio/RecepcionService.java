@@ -52,18 +52,6 @@ public class RecepcionService {
 
             recepcionRepository.insertarRecepcionRF10(ordencompra_id, bodega_id, fechaRecepcion, sucursal_nombre,proveedor_nombre, bodega_nombre);
             ordenCompraRepository.actualizarOrdenCompra(ordencompra_id, "Entregada");
-            Collection<ProductoCompra> productosCompra = recepcionRepository.darInfoProductoCompra(ordenCompra.getId());
-            for (ProductoCompra prod : productosCompra) {
-                System.out.println("Producto: " + prod.getPk().getProducto_codigobarras().getNombre());
-            }
-
-            for(ProductoCompra prod: productosCompra){
-                int producto_codigobarras = prod.getPk().getProducto_codigobarras().getCodigoBarras();
-                int cantidad = prod.getCantidad();
-                int precioacordado = prod.getPrecioAcordado();
-                recepcionRepository.actualizarProducto(bodega_id, producto_codigobarras, cantidad, precioacordado);
-            }
-
         }catch (Exception e){
             System.out.println("Error al registrar la recepcion de productos.");
         }
@@ -95,8 +83,8 @@ public class RecepcionService {
         Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         System.out.println(recepcions.size());
         Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
-        Collection<Recepcion> recepcions2 = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
-        return recepcions2;
+        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        return recepcions;
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -104,8 +92,8 @@ public class RecepcionService {
         Collection<Recepcion> recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
         System.out.println(recepcions.size());
         Thread.sleep(30000); // Simular operación larga para mantener el bloqueo.
-        Collection<Recepcion> recepcions2 = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
-        return recepcions2
+        recepcions = recepcionRepository.obtenerRecepcion(idB, idS); // Consultar bar.
+        return recepcions
         ;
     }
     

@@ -2,145 +2,110 @@ package uniandes.edu.co.proyecto.modelo;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name="producto")
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.ToString;
+
+@Document(collection = "productos")
+@ToString
 public class Producto {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "producto_sequence_gen")
-    @SequenceGenerator(name = "producto_sequence_gen", sequenceName = "producto_sequence", allocationSize = 1)
-    @Column(name = "codigobarras")
-    private Integer codigoBarras;
-    
-    @Column(name = "nombre")
+    private int id;
     private String nombre;
-    @Column(name = "costobodega")
-    private Integer costoBodega;
-    @Column(name = "costounidad")
-    private Integer costoUnidad;
-    @Column(name = "presentacion")
+    private int costo_bodega;
+    private int costo_unitario;
     private String presentacion;
-    @Column(name = "cantidadpresentacion")
-    private Integer cantidadPresentacion;
-    @Column(name = "unidadmedida")
-    private String unidadMedida;
-    @Column(name = "fechaexpiracion")
-    private Date fechaExpiracion;
-
-    // FOREIGN KEYS
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_codigo", referencedColumnName = "codigo")
-    private Categoria categoria;
-
-    @ManyToOne
-    @JoinColumn(name = "empaque_id", referencedColumnName = "id")
-    private Empaque empaque;
-
-    public Producto(String nombre, Integer costoBodega, Integer costoUnidad, String presentacion, Integer cantidadPresentacion, String unidadMedida, Date fechaExpiracion){
-
+    private String unidad_medida;
+    private int volumen_empaque;
+    private int peso_empaque;
+    @JsonIgnoreProperties({"nombre", "descripcion", "caracteristicas_almacenamiento"})
+    private int categoria;
+    private Date fecha_expiracion;
+    private String codigo_barras;
+    public Producto(int id, String nombre, int costo_bodega, int costo_unitario, String presentacion,
+            String unidad_medida, int volumen_empaque, int peso_empaque, int categoria, Date fecha_expiracion,
+            String codigo_barras) {
+        this.id = id;
         this.nombre = nombre;
-        this.costoBodega = costoBodega;
-        this.costoUnidad = costoUnidad;
+        this.costo_bodega = costo_bodega;
+        this.costo_unitario = costo_unitario;
         this.presentacion = presentacion;
-        this.cantidadPresentacion = cantidadPresentacion;
-        this.unidadMedida = unidadMedida;
-        this.fechaExpiracion = fechaExpiracion;
-
+        this.unidad_medida = unidad_medida;
+        this.volumen_empaque = volumen_empaque;
+        this.peso_empaque = peso_empaque;
+        this.categoria = categoria;
+        this.fecha_expiracion = fecha_expiracion;
+        this.codigo_barras = codigo_barras;
     }
-
-    public Producto(){
-        ;
+    public int getId() {
+        return id;
     }
-
-    public Integer getCodigoBarras() {
-        return codigoBarras;
+    public void setId(int id) {
+        this.id = id;
     }
-
-    public void setCodigoBarras(Integer codigoBarras) {
-        this.codigoBarras = codigoBarras;
-    }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public Integer getCostoBodega() {
-        return costoBodega;
+    public int getCosto_bodega() {
+        return costo_bodega;
     }
-
-    public void setCostoBodega(Integer costoBodega) {
-        this.costoBodega = costoBodega;
+    public void setCosto_bodega(int costo_bodega) {
+        this.costo_bodega = costo_bodega;
     }
-
-    public Integer getCostoUnidad() {
-        return costoUnidad;
+    public int getCosto_unitario() {
+        return costo_unitario;
     }
-
-    public void setCostoUnidad(Integer costoUnidad) {
-        this.costoUnidad = costoUnidad;
+    public void setCosto_unitario(int costo_unitario) {
+        this.costo_unitario = costo_unitario;
     }
-
     public String getPresentacion() {
         return presentacion;
     }
-
     public void setPresentacion(String presentacion) {
         this.presentacion = presentacion;
     }
-
-    public Integer getCantidadPresentacion() {
-        return cantidadPresentacion;
+    public String getUnidad_medida() {
+        return unidad_medida;
     }
-
-    public void setCantidadPresentacion(Integer cantidadPresentacion) {
-        this.cantidadPresentacion = cantidadPresentacion;
+    public void setUnidad_medida(String unidad_medida) {
+        this.unidad_medida = unidad_medida;
     }
-
-    public String getUnidadMedida() {
-        return unidadMedida;
+    public int getVolumen_empaque() {
+        return volumen_empaque;
     }
-
-    public void setUnidadMedida(String unidadMedida) {
-        this.unidadMedida = unidadMedida;
+    public void setVolumen_empaque(int volumen_empaque) {
+        this.volumen_empaque = volumen_empaque;
     }
-
-    public Date getFechaExpiracion() {
-        return fechaExpiracion;
+    public int getPeso_empaque() {
+        return peso_empaque;
     }
-
-    public void setFechaExpiracion(Date fechaExpiracion) {
-        this.fechaExpiracion = fechaExpiracion;
+    public void setPeso_empaque(int peso_empaque) {
+        this.peso_empaque = peso_empaque;
     }
-
-    public Categoria getCategoria() {
+    public int getCategoria() {
         return categoria;
     }
-
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
-
-    public Empaque getEmpaque() {
-        return empaque;
+    public Date getFecha_expiracion() {
+        return fecha_expiracion;
+    }
+    public void setFecha_expiracion(Date fecha_expiracion) {
+        this.fecha_expiracion = fecha_expiracion;
+    }
+    public String getCodigo_barras() {
+        return codigo_barras;
+    }
+    public void setCodigo_barras(String codigo_barras) {
+        this.codigo_barras = codigo_barras;
     }
 
-    public void setEmpaque(Empaque empaque) {
-        this.empaque = empaque;
-    }
-
+    
 }

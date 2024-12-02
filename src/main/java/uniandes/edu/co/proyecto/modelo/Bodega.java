@@ -1,79 +1,60 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Entity
-@Table(name = "bodega")
 public class Bodega {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bodega_sequence_gen")
-    @SequenceGenerator(name = "bodega_sequence_gen", sequenceName = "bodega_sequence", allocationSize = 1)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "nombre")
+    private int id;
     private String nombre;
-    @Column(name = "tamanio")
-    private Integer tamanio;
 
-    // FOREIGN KEYS
+    @Field("tamaño")
+    private int tamanio;
+    @Field("recepcion")
+    private List<Recepcion> recepcion;
+    private List<ProductoBodega> producto_bodegas;
 
-    @ManyToOne
-    @JoinColumn(name = "sucursal_id", referencedColumnName = "id")
-    private Sucursal sucursal;
-
-    public Bodega(String nombre, Integer tamanio){
+    public Bodega(int id, String nombre, int tamanio) {
+        this.id = id;
         this.nombre = nombre;
         this.tamanio = tamanio;
-
     }
-
-    public Bodega(){
-        ;
-    }
-
-    public Integer getId() {
+    
+    public int getId() {
         return id;
     }
-
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public Integer getTamanio() {
+    public int getTamanio() {
         return tamanio;
     }
-
-    public void setTamanio(Integer tamanio) {
+    public void setTamanio(int tamanio) {
         this.tamanio = tamanio;
     }
-
-    public Sucursal getSucursal() {
-        return sucursal;
+    public List<Recepcion> getRecepcion() {
+        return recepcion;
     }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
+    public void setRecepcion(List<Recepcion> recepcion) {
+        this.recepcion = recepcion;
     }
-
+    public List<ProductoBodega> getProducto_bodegas() {
+        return producto_bodegas;
+    }
+    public void setProducto_bodegas(List<ProductoBodega> producto_bodegas) {
+        this.producto_bodegas = producto_bodegas;
+    }
 
     
+
     
 }

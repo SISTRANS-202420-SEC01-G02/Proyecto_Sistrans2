@@ -1,77 +1,52 @@
 package uniandes.edu.co.proyecto.modelo;
-import uniandes.edu.co.proyecto.modelo.pks.ProductoBodegaPK;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "productobodega")
-public class ProductoBodega{
+public class ProductoBodega {
 
-    @EmbeddedId 
-    private ProductoBodegaPK pk;
-    @Column(name = "costopromedio")
-    private Integer costoPromedio;
-    @Column(name = "cantidadproducto")
-    private Integer cantidadProducto;
-    @Column(name = "nivelreorden")
-    private Integer nivelReorden;
-    @Column(name = "capacidadproducto")
-    private Integer capacidadProducto;
 
-    public ProductoBodega(Producto producto_codigobarras, Bodega bodega_id, Integer costoPromedio, Integer cantidadProducto, Integer nivelReorden, Integer capacidadProducto) {
-        
-        this.pk = new ProductoBodegaPK(producto_codigobarras, bodega_id);
+    private String productos; 
+    private int costoPromedio; 
+    private int cantidadActual; 
+    private int nivelReorden;
+
+    public ProductoBodega(String productos, int costoPromedio, int cantidadActual, int nivelReorden) {
+        this.productos = productos;
         this.costoPromedio = costoPromedio;
-        this.cantidadProducto = cantidadProducto;
+        this.cantidadActual = cantidadActual;
         this.nivelReorden = nivelReorden;
-        this.capacidadProducto = capacidadProducto;
-
     }
 
-    public ProductoBodega() {
-        ;
+    public ProductoBodega() {}
+
+    public String getProductos() {
+        return productos;
     }
 
-    public ProductoBodegaPK getPk() {
-        return pk;
+    public void setProductos(String productos) {
+        this.productos = productos;
     }
 
-    public void setPk(ProductoBodegaPK pk) {
-        this.pk = pk;
-    }
-
-    public Integer getCostoPromedio() {
+    public double getCostoPromedio() {
         return costoPromedio;
     }
 
-    public void setCostoPromedio(Integer costoPromedio) {
+    public void setCostoPromedio(int costoPromedio) {
         this.costoPromedio = costoPromedio;
     }
 
-    public Integer getCantidadProducto() {
-        return cantidadProducto;
+    public int getCantidadActual() {
+        return cantidadActual;
     }
 
-    public void setCantidadProducto(Integer cantidadProducto) {
-        this.cantidadProducto = cantidadProducto;
+    public void setCantidadActual(int cantidadActual) {
+        this.cantidadActual = cantidadActual;
     }
 
-    public Integer getNivelReorden() {
+    public int getNivelReorden() {
         return nivelReorden;
     }
 
-    public void setNivelReorden(Integer nivelReorden) {
+    public void setNivelReorden(int nivelReorden) {
         this.nivelReorden = nivelReorden;
     }
 
-    public Integer getCapacidadProducto() {
-        return capacidadProducto;
-    }
-
-    public void setCapacidadProducto(Integer capacidadProducto) {
-        this.capacidadProducto = capacidadProducto;
-    }
-    
 }

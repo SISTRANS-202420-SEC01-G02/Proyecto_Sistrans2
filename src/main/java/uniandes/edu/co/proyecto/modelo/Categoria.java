@@ -1,50 +1,36 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.sql.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import lombok.ToString;
 
-
-@Entity
-@Table(name = "categoria")
+@Document(collection = "categorias")
+@ToString
 public class Categoria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categoria_sequence_gen")
-    @SequenceGenerator(name = "categoria_sequence_gen", sequenceName = "categoria_sequence", allocationSize = 1)
-    @Column(name = "codigo")
-    private Integer codigo;
-    @Column(name = "nombre")
+    @Field("_id")
+    private int id;
     private String nombre;
-    @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "caracteristicasalmacenaje")
-    private String caracteristicasAlmacenaje;
+    @Field("caracteristicas_almacenamiento")
+    private String caracteristicas_almacenamiento;
 
-    public Categoria(String nombre, String descripcion, String caracteristicasAlmacena, Date fechaExpiracion){
-
+    public Categoria(int id, String nombre, String descripcion, String caracteristicas_almacenamiento) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.caracteristicasAlmacenaje = caracteristicasAlmacena;
-
+        this.caracteristicas_almacenamiento = caracteristicas_almacenamiento;
     }
 
-    public Categoria(){
-        ;
+    public int getId() {
+        return id;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -63,12 +49,15 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public String getCaracteristicasAlmacenaje() {
-        return caracteristicasAlmacenaje;
+    public String getCaracteristicas_almacenamiento() {
+        return caracteristicas_almacenamiento;
     }
 
-    public void setCaracteristicasAlmacenaje(String caracteristicasAlmacenaje) {
-        this.caracteristicasAlmacenaje = caracteristicasAlmacenaje;
+    public void setCaracteristicas_almacenamiento(String caracteristicas_almacenamiento) {
+        this.caracteristicas_almacenamiento = caracteristicas_almacenamiento;
     }
+    
+    
+
     
 }

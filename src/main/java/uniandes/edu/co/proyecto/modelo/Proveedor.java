@@ -1,45 +1,44 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "proveedor")
+import lombok.ToString;
+
+@Document(collection = "proveedores")
+@ToString
 public class Proveedor {
 
     @Id
-    @Column(name = "nit")
-    private Integer nit;
-    @Column(name = "nombre")
+    private int id;
+    private Long nit;
     private String nombre;
-    @Column(name = "direccion")
     private String direccion;
-    @Column(name = "nombrepersona")
-    private String nombrePersona;
-    @Column(name = "telefonopersona")
-    private Integer telefonoPersona;
-    
-    public Proveedor(Integer nit, String nombre, String direccion, String nombrePersona, Integer telefonoPersona) {
-        
+    private String persona_contacto;
+    private Long telefono;
+
+    public Proveedor(int id, Long nit, String nombre, String direccion, String persona_contacto, Long telefono) {
+        this.id = id;
         this.nit = nit;
         this.nombre = nombre;
         this.direccion = direccion;
-        this.nombrePersona = nombrePersona;
-        this.telefonoPersona = telefonoPersona;
-
+        this.persona_contacto = persona_contacto;
+        this.telefono = telefono;
     }
 
-    public Proveedor() {
-        ;
+    public int getId() {
+        return id;
     }
 
-    public Integer getNit() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Long getNit() {
         return nit;
     }
 
-    public void setNit(Integer nit) {
+    public void setNit(Long nit) {
         this.nit = nit;
     }
 
@@ -59,20 +58,24 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
-    public String getNombrePersona() {
-        return nombrePersona;
+    public String getPersona_contacto() {
+        return persona_contacto;
     }
 
-    public void setNombrePersona(String nombrePersona) {
-        this.nombrePersona = nombrePersona;
+    public void setPersona_contacto(String persona_contacto) {
+        this.persona_contacto = persona_contacto;
     }
 
-    public Integer getTelefonoPersona() {
-        return telefonoPersona;
+    public Long getTelefono() {
+        return telefono;
     }
 
-    public void setTelefonoPersona(Integer telefonoPersona) {
-        this.telefonoPersona = telefonoPersona;
+    public void setTelefono(Long telefono) {
+        this.telefono = telefono;
     }
 
+    
+
+    
+    
 }

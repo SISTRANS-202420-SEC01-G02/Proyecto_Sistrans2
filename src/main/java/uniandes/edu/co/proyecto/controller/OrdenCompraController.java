@@ -1,73 +1,78 @@
 package uniandes.edu.co.proyecto.controller;
 
-import java.util.Collection;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import uniandes.edu.co.proyecto.modelo.OrdenCompra;
-import uniandes.edu.co.proyecto.repositorio.OrdenCompraRepository;
+import uniandes.edu.co.proyecto.repository.OrdenCompraRepository;
+import uniandes.edu.co.proyecto.repository.SucursalRepository;
+import uniandes.edu.co.proyecto.modelo.Sucursal;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/ordenescompra")
 public class OrdenCompraController {
 
     @Autowired
     private OrdenCompraRepository ordenCompraRepository;
 
-    @GetMapping("/ordencompra")
-    public Collection<OrdenCompra> ordenesCompra() {
-        return ordenCompraRepository.darOrdenesCompra();
-    }
+    @Autowired
+    private SucursalRepository sucursalRepository;
 
-    @PostMapping("/ordencompra/new/save")
-    public ResponseEntity<String> guardarOrdenCompra(@RequestBody OrdenCompra ordenCompra) {
+    // Crear una nueva orden de compra
+    @PostMapping("")
+    public ResponseEntity<String> crearOrdenCompra(@RequestBody OrdenCompra ordenCompra) {
         try {
-            ordenCompraRepository.insertarOrdenCompra(
-                    ordenCompra.getFechaEsperada(),
-                    new Date(),
-                    "Vigente",
-                    ordenCompra.getSucursal().getId(),
-                    ordenCompra.getProveedor().getNit()
-            );
+            // Verificar si la sucursal existe
+            Optional<Sucursal> sucursal = sucursalRepository.findById(ordenCompra.getSucursal_id());
+            if (!sucursal.isPresent()) {
+                return new ResponseEntity<>("Sucursal no encontrada o ID de sucursal inválido", HttpStatus.BAD_REQUEST);
+            }
+
+            // Establecer el estado de la orden de compra como "vigente"
+            ordenCompra.setEstado("Vigente");
+
+            // Generar un ID único para la orden de compra si no se ha proporcionado
+            if (ordenCompra.getId() == 0) {
+                ordenCompra.setId(4);  // Ejemplo de generación de ID único
+            }
+
+            // Guardar la orden de compra en la base de datos
+            ordenCompraRepository.save(ordenCompra);
+
             return new ResponseEntity<>("Orden de compra creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al crear la orden de compra", HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();  // Log para obtener más detalles
+            return new ResponseEntity<>("Error al crear la orden de compra: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/ordencompra/{id}/edit/save")
-    public ResponseEntity<String> editarGuardarOrdenCompra(@PathVariable("id") int id, @RequestBody OrdenCompra ordenCompra) {
+    // Obtener todas las órdenes de compra
+    @GetMapping("")
+    public ResponseEntity<List<OrdenCompra>> obtenerTodasLasOrdenesCompra() {
         try {
-            OrdenCompra ordenActual = ordenCompraRepository.darOrdenCompra(id);
-            if (ordenActual != null) {
-                if (ordenCompra.getEstado().equals("Anulada") && !ordenActual.getEstado().equals("Vigente")) {
-                    return new ResponseEntity<>("La orden de compra solo puede ser anulada si está en estado 'Vigente'", HttpStatus.BAD_REQUEST);
-                }
-                ordenCompraRepository.actualizarOrdenCompra(id, ordenCompra.getEstado());
-                return new ResponseEntity<>("Orden de compra actualizada exitosamente", HttpStatus.OK);
+            List<OrdenCompra> ordenesCompra = ordenCompraRepository.findAll();
+            return ResponseEntity.ok(ordenesCompra);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Obtener una orden de compra por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<OrdenCompra> obtenerOrdenCompraPorId(@PathVariable int id) {
+        try {
+            OrdenCompra ordenCompra = ordenCompraRepository.findById(id).orElse(null);
+            if (ordenCompra != null) {
+                return ResponseEntity.ok(ordenCompra);
             } else {
-                return new ResponseEntity<>("La orden de compra no se encontró", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return new ResponseEntity<>("La orden de compra no se actualizó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    @GetMapping("/ordencompra/{id}/delete")
-    public ResponseEntity<String> eliminarOrdenCompra(@PathVariable("id") int id) {
-        try {
-            ordenCompraRepository.eliminarOrdenCompra(id);
-            return new ResponseEntity<>("Orden de compra eliminada exitosamente", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("La orden de compra no se eliminó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

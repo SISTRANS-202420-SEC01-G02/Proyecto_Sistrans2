@@ -1,89 +1,81 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import java.util.List;
 
-@Entity
-@Table(name = "sucursal")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import lombok.ToString;
+
+@Document(collection = "sucursales")
+@ToString
 public class Sucursal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sucursal_sequence_gen")
-    @SequenceGenerator(name = "sucursal_sequence_gen", sequenceName = "sucursal_sequence", allocationSize = 1)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "nombre")
+    private int id;
     private String nombre;
-    @Column(name = "tamanio")
-    private Integer tamanio;
-    @Column(name = "direccion")
+
+    @Field("ciudad")
+    private String ciudad;
     private String direccion;
+    private Long telefono;
 
-    // FOREIGN KEYS
+    @Field("ordenes_compra")
+    private List<Integer> ordenes_compra;
 
-    @ManyToOne
-    @JoinColumn(name = "ciudad_codigo", referencedColumnName = "codigo")
-    private Ciudad ciudad;
-
-
-
-    public Sucursal(String nombre, Integer tamanio, String direccion){
-        
+    @Field("bodegas")
+    private List<Bodega> bodegas;
+    public Sucursal(int id, String nombre, String ciudad, String direccion, Long telefono) {
+        this.id = id;
         this.nombre = nombre;
-        this.tamanio = tamanio;
+        this.ciudad = ciudad;
         this.direccion = direccion;
-
+        this.telefono = telefono;
     }
-
-    public Sucursal(){
-        ;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
-
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public Integer getTamanio() {
-        return tamanio;
+    public String getCiudad() {
+        return ciudad;
     }
-
-    public void setTamanio(Integer tamanio) {
-        this.tamanio = tamanio;
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
-
     public String getDireccion() {
         return direccion;
     }
-
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-
-    public Ciudad getCiudad() {
-        return ciudad;
+    public Long getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(Long telefono) {
+        this.telefono = telefono;
+    }
+    public List<Integer> getOrdenes_compra() {
+        return ordenes_compra;
+    }
+    public void setOrdenes_compra(List<Integer> ordenes_compra) {
+        this.ordenes_compra = ordenes_compra;
+    }
+    public List<Bodega> getBodegas() {
+        return bodegas;
+    }
+    public void setBodegas(List<Bodega> bodegas) {
+        this.bodegas = bodegas;
     }
 
-    public void setCiudad(Ciudad ciudad) {
-        this.ciudad = ciudad;
-    }
+    
     
 }

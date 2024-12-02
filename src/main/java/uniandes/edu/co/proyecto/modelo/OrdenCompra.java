@@ -1,77 +1,75 @@
 package uniandes.edu.co.proyecto.modelo;
 
-import java.util.Date;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "ordencompra")
+import lombok.ToString;
+
+@Document(collection = "ordenescompra")
+@ToString
 public class OrdenCompra {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordencompra_sequence_gen")
-    @SequenceGenerator(name = "ordencompra_sequence_gen", sequenceName = "ordencompra_sequence", allocationSize = 1)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "fechaesperada")
-    private Date fechaEsperada;
-    @Column(name = "fechacreacion", updatable = false)
-    private Date fechaCreacion;
-    @Column(name = "estado")
+    private int id;
+    private String fecha_creacion;
+    private int sucursal_id;
+    private int proveedor_id;
+    private String fecha_esperada;
     private String estado;
-
-    // FOREIGN KEYS
-
-    @ManyToOne
-    @JoinColumn(name = "sucursal_id", referencedColumnName = "id")
-    private Sucursal sucursal;
-
-    @ManyToOne
-    @JoinColumn(name = "proveedor_nit", referencedColumnName = "nit")
-    private Proveedor proveedor;
-
-    public OrdenCompra(Date fechaEsperada, Date fechaCreacion, String estado){
-
-        this.fechaEsperada = fechaEsperada;
-        this.fechaCreacion = fechaCreacion;
+    private int cantidad;
+    private List<Integer> productos;
+    
+    public OrdenCompra(int id, String fecha_creacion, int sucursal_id, int proveedor_id, String fecha_esperada,
+            String estado, int cantidad) {
+        this.id = id;
+        this.fecha_creacion = fecha_creacion;
+        this.sucursal_id = sucursal_id;
+        this.proveedor_id = proveedor_id;
+        this.fecha_esperada = fecha_esperada;
         this.estado = estado;
-
+        this.cantidad = cantidad;
     }
 
-    public OrdenCompra(){
-        ;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Date getFechaEsperada() {
-        return fechaEsperada;
+    public String getFecha_creacion() {
+        return fecha_creacion;
     }
 
-    public void setFechaEsperada(Date fechaEsperada) {
-        this.fechaEsperada = fechaEsperada;
+    public void setFecha_creacion(String fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
-    public Date getFechaCreacion() {
-        return fechaCreacion;
+    public int getSucursal_id() {
+        return sucursal_id;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setSucursal_id(int sucursal_id) {
+        this.sucursal_id = sucursal_id;
+    }
+
+    public int getProveedor_id() {
+        return proveedor_id;
+    }
+
+    public void setProveedor_id(int proveedor_id) {
+        this.proveedor_id = proveedor_id;
+    }
+
+    public String getFecha_esperada() {
+        return fecha_esperada;
+    }
+
+    public void setFecha_esperada(String fecha_esperada) {
+        this.fecha_esperada = fecha_esperada;
     }
 
     public String getEstado() {
@@ -82,21 +80,22 @@ public class OrdenCompra {
         this.estado = estado;
     }
 
-    public Sucursal getSucursal() {
-        return sucursal;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
+    public List<Integer> getProductos() {
+        return productos;
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
+    public void setProductos(List<Integer> productos) {
+        this.productos = productos;
     }
+
     
     
 }

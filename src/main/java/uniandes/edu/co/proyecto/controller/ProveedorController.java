@@ -1,71 +1,63 @@
 package uniandes.edu.co.proyecto.controller;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import uniandes.edu.co.proyecto.modelo.Proveedor;
-import uniandes.edu.co.proyecto.repositorio.ProveedorRepository;
+import uniandes.edu.co.proyecto.repository.ProveedorRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/proveedores")
 public class ProveedorController {
 
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    @GetMapping("/proveedor")
-    public Collection<Proveedor> proveedores() {
-        return proveedorRepository.darProveedores();
+    // Obtener todos los proveedores
+    @GetMapping
+    public ResponseEntity<List<Proveedor>> getAllProveedores() {
+        List<Proveedor> proveedores = proveedorRepository.findAll();
+        return ResponseEntity.ok(proveedores);
     }
 
-    @PostMapping("/proveedor/new/save")
-    public ResponseEntity<String> guardarProveedor(@RequestBody Proveedor proveedor) {
-        try {
-            proveedorRepository.insertarProveedor(
-                    proveedor.getNit(),
-                    proveedor.getNombre(),
-                    proveedor.getDireccion(),
-                    proveedor.getNombrePersona(),
-                    proveedor.getTelefonoPersona()
-            );
-            return new ResponseEntity<>("Proveedor creado exitosamente", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al crear el Proveedor", HttpStatus.INTERNAL_SERVER_ERROR);
+    // Obtener proveedor por id
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> getProveedorById(@PathVariable int id) {
+        Optional<Proveedor> proveedor = proveedorRepository.findById(id);
+        return proveedor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Crear un nuevo proveedor
+    @PostMapping
+    public ResponseEntity<Proveedor> createProveedor(@RequestBody Proveedor proveedor) {
+        Proveedor proveedorGuardado = proveedorRepository.save(proveedor);
+        return new ResponseEntity<>(proveedorGuardado, HttpStatus.CREATED);
+    }
+
+    // Actualizar un proveedor existente
+    @PutMapping("/{id}")
+    public ResponseEntity<Proveedor> updateProveedor(@PathVariable int id, @RequestBody Proveedor proveedor) {
+        if (proveedorRepository.existsById(id)) {
+            proveedor.setId(id);  // Se asegura de que el id esté presente en el proveedor
+            Proveedor updatedProveedor = proveedorRepository.save(proveedor);
+            return ResponseEntity.ok(updatedProveedor);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/proveedor/{nit}/edit/save")
-    public ResponseEntity<String> editarGuardarProveedor(
-            @PathVariable("nit") int nit,
-            @RequestBody Proveedor proveedor) {
-        try {
-            proveedorRepository.actualizarProveedor(
-                    nit,
-                    proveedor.getNombre(),
-                    proveedor.getDireccion(),
-                    proveedor.getNombrePersona(),
-                    proveedor.getTelefonoPersona()
-            );
-            return new ResponseEntity<>("Proveedor actualizado exitosamente", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("El proveedor no se actualizó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/proveedor/{nit}/delete")
-    public ResponseEntity<String> eliminarProveedor(@PathVariable("nit") int nit) {
-        try {
-            proveedorRepository.eliminarProveedor(nit);
-            return new ResponseEntity<>("Proveedor eliminado exitosamente", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("El proveedor no se eliminó correctamente", HttpStatus.INTERNAL_SERVER_ERROR);
+    // Eliminar un proveedor
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProveedor(@PathVariable int id) {
+        if (proveedorRepository.existsById(id)) {
+            proveedorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();  // Respuesta correcta cuando se elimina
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

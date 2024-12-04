@@ -59,7 +59,7 @@ public class SucursalController {
     }
 
     // Obtener todas las sucursales
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<List<Sucursal>> obtenerTodasLasSucursales() {
         try {
             List<Sucursal> sucursales = sucursalesRepository.findAll();

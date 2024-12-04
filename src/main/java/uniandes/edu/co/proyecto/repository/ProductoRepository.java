@@ -9,8 +9,8 @@ import uniandes.edu.co.proyecto.modelo.Producto;
 
 @Repository
 public interface ProductoRepository extends MongoRepository<Producto, Integer> {
-    Producto findByCodigoBarras(String codigoBarras);
     Producto findByNombre(String nombre);
+    Producto findByCodigoBarras(String codigo_barras);
 
     //RFC1
     @Query("{ 'costo_unitario': { $gte: ?0, $lte: ?1 }, 'fecha_expiración': { $gte: ?2, $lte: ?3 }, 'categoria._id': ?4 }")

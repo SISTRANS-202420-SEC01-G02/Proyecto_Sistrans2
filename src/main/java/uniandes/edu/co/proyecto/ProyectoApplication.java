@@ -6,6 +6,7 @@ package uniandes.edu.co.proyecto;
 import org.springframework.boot.CommandLineRunner; */
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /* import uniandes.edu.co.proyecto.modelo.Bodega;
 import uniandes.edu.co.proyecto.modelo.Categoria;
@@ -33,6 +34,7 @@ import uniandes.edu.co.proyecto.repositorio.RecepcionRepository;
 import uniandes.edu.co.proyecto.repositorio.SucursalRepository; */
 
 @SpringBootApplication
+@EnableMongoRepositories(basePackages = "uniandes.edu.co.proyecto.repository")
 public class ProyectoApplication{
 
 	/* @Autowired

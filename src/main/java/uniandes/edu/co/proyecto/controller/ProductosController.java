@@ -35,9 +35,9 @@ public class ProductosController {
         }
     }
 
-    @GetMapping("/{codigoBarras}")
-    public ResponseEntity<Producto> obtenerProductoPorCodigo(@PathVariable("codigoBarras") String codigoBarras) {
-        Producto producto = productoRepository.findByCodigoBarras(codigoBarras);
+    @GetMapping("/{codigo_barras}")
+    public ResponseEntity<Producto> obtenerProductoPorCodigo(@PathVariable("codigo_barras") String codigo_barras) {
+        Producto producto = productoRepository.findByCodigoBarras(codigo_barras);
         return producto != null ? new ResponseEntity<>(producto, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

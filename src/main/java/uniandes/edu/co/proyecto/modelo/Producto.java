@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -21,10 +22,13 @@ public class Producto {
     private String unidad_medida;
     private int volumen_empaque;
     private int peso_empaque;
+    
     @JsonIgnoreProperties({"nombre", "descripcion", "caracteristicas_almacenamiento"})
     private int categoria;
     private Date fecha_expiracion;
-    private String codigo_barras;
+    
+    @Field("codigo_barras")
+    private String codigoBarras;
     public Producto(int id, String nombre, int costo_bodega, int costo_unitario, String presentacion,
             String unidad_medida, int volumen_empaque, int peso_empaque, int categoria, Date fecha_expiracion,
             String codigo_barras) {
@@ -38,7 +42,7 @@ public class Producto {
         this.peso_empaque = peso_empaque;
         this.categoria = categoria;
         this.fecha_expiracion = fecha_expiracion;
-        this.codigo_barras = codigo_barras;
+        this.codigoBarras = codigo_barras;
     }
     public int getId() {
         return id;
@@ -101,10 +105,10 @@ public class Producto {
         this.fecha_expiracion = fecha_expiracion;
     }
     public String getCodigo_barras() {
-        return codigo_barras;
+        return codigoBarras;
     }
     public void setCodigo_barras(String codigo_barras) {
-        this.codigo_barras = codigo_barras;
+        this.codigoBarras = codigo_barras;
     }
 
     

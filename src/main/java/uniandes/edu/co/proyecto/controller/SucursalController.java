@@ -19,7 +19,7 @@ public class SucursalController {
     private SucursalRepository sucursalesRepository;
 
     // Crear una nueva sucursal
-    @PostMapping("")
+    @PostMapping("/new/save")
     public ResponseEntity<String> crearSucursal(@RequestBody Sucursal sucursales) {
         try {
             sucursalesRepository.save(sucursales);  // Guardamos la sucursal utilizando el método save() de MongoRepository

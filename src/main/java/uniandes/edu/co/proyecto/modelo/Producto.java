@@ -27,11 +27,11 @@ public class Producto {
     private int categoria;
     private Date fecha_expiracion;
     
-    @Field("codigo_barras")
+    @Field("codigoBarras")
     private String codigoBarras;
     public Producto(int id, String nombre, int costo_bodega, int costo_unitario, String presentacion,
             String unidad_medida, int volumen_empaque, int peso_empaque, int categoria, Date fecha_expiracion,
-            String codigo_barras) {
+            String codigoBarras) {
         this.id = id;
         this.nombre = nombre;
         this.costo_bodega = costo_bodega;
@@ -42,7 +42,7 @@ public class Producto {
         this.peso_empaque = peso_empaque;
         this.categoria = categoria;
         this.fecha_expiracion = fecha_expiracion;
-        this.codigoBarras = codigo_barras;
+        this.codigoBarras = codigoBarras;
     }
     public int getId() {
         return id;

@@ -18,7 +18,7 @@ public class ProveedorController {
     private ProveedorRepository proveedorRepository;
 
     // Obtener todos los proveedores
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Proveedor>> getAllProveedores() {
         List<Proveedor> proveedores = proveedorRepository.findAll();
         return ResponseEntity.ok(proveedores);
@@ -32,17 +32,21 @@ public class ProveedorController {
     }
 
     // Crear un nuevo proveedor
-    @PostMapping
-    public ResponseEntity<Proveedor> createProveedor(@RequestBody Proveedor proveedor) {
-        Proveedor proveedorGuardado = proveedorRepository.save(proveedor);
-        return new ResponseEntity<>(proveedorGuardado, HttpStatus.CREATED);
+    @PostMapping("/new")
+    public ResponseEntity<String> createProveedor(@RequestBody Proveedor proveedor) {
+        try {
+            proveedorRepository.save(proveedor);
+            return new ResponseEntity<>("Proveedor creado exitosamente", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al crear el proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Actualizar un proveedor existente
     @PutMapping("/{id}")
     public ResponseEntity<Proveedor> updateProveedor(@PathVariable int id, @RequestBody Proveedor proveedor) {
         if (proveedorRepository.existsById(id)) {
-            proveedor.setId(id);  // Se asegura de que el id esté presente en el proveedor
+            proveedorRepository.delete(proveedor);
             Proveedor updatedProveedor = proveedorRepository.save(proveedor);
             return ResponseEntity.ok(updatedProveedor);
         } else {
@@ -52,12 +56,12 @@ public class ProveedorController {
 
     // Eliminar un proveedor
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProveedor(@PathVariable int id) {
-        if (proveedorRepository.existsById(id)) {
+    public ResponseEntity<String> deleteProveedor(@PathVariable int id) {
+        try{
             proveedorRepository.deleteById(id);
-            return ResponseEntity.noContent().build();  // Respuesta correcta cuando se elimina
-        } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("Proveedor eliminado exitosamente", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al eliminar el proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

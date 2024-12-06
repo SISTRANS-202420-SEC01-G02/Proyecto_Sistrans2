@@ -77,11 +77,11 @@ public class ProductosController {
 
     @GetMapping("/caracteristicas")
     public ResponseEntity<List<Producto>> mostrarProductosPorCaracteristicas(
-        @RequestParam(required = false) int precioMin,
-        @RequestParam(required = false) int precioMax,
+        @RequestParam(required = false, defaultValue = "0") Integer precioMin,
+        @RequestParam(required = false, defaultValue = "0") Integer precioMax,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaExpInf,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaExpSup,
-        @RequestParam(required = false) int categoriaID) {
+        @RequestParam(required = false, defaultValue = "0") Integer categoriaID) {
             System.out.println("Parametros recibidos:");
             System.out.println( precioMin);
             System.out.println( precioMax);
@@ -92,6 +92,19 @@ public class ProductosController {
 
         List<Producto> productos = productoRepository.findByCaracteristicas(precioMin, precioMax, fechaExpInf, fechaExpSup, categoriaID);
         return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Map<String, Object>> obtenerProductos() {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            response.put("productos", productoRepository.findAll());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Error al obtener los productos: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

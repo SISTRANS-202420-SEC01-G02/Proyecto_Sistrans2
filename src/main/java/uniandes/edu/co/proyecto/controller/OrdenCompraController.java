@@ -23,7 +23,7 @@ public class OrdenCompraController {
     private SucursalRepository sucursalRepository;
 
     // Crear una nueva orden de compra
-    @PostMapping("")
+    @PostMapping("/new")
     public ResponseEntity<String> crearOrdenCompra(@RequestBody OrdenCompra ordenCompra) {
         try {
             // Verificar si la sucursal existe
@@ -51,7 +51,7 @@ public class OrdenCompraController {
     }
 
     // Obtener todas las órdenes de compra
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<List<OrdenCompra>> obtenerTodasLasOrdenesCompra() {
         try {
             List<OrdenCompra> ordenesCompra = ordenCompraRepository.findAll();
